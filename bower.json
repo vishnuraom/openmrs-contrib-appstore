@@ -14,5 +14,9 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "paper-tabs": "PolymerElements/paper-tabs#^1.5.0",
+    "paper-toolbar": "PolymerElements/paper-toolbar#^1.1.4"
+  }
 }

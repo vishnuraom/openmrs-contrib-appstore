@@ -1,0 +1,37 @@
+<link rel="import" href="..\..\bower_components/polymer/polymer.html">
+<link rel="import" href="..\..\bower_components/paper-toolbar/paper-toolbar.html">
+
+<dom-module id="app-toolbar">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      paper-toolbar {
+        background-color: purple;
+      }
+    </style>
+
+<paper-toolbar>
+  <span class="title">{{org}}</span>
+</paper-toolbar>
+
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'app-toolbar',
+
+      properties: {
+        org: {
+          type: String,
+          value: 'OpenMRS App Store',
+          notify: true
+        }
+      }
+    });
+  })();
+  </script>
+</dom-module>
