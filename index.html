@@ -1,13 +1,14 @@
 <html>
  <head>
   <title>OpenMRS App Store</title>
-    <script src="js/jquery-2.2.3.min.js"></script>
-    <script src="js/home.js"></script>
-    <link rel="import" src="custom_components\app-toolbar.html">
-    <link rel="import" src="custom_components\app-tabs.html">
+    <!--<script src="js/jquery-2.2.3.min.js"></script>
+    <script src="js/home.js"></script>-->
+    <link rel="import" href="custom_components/appstore-cards.html">
+    <link rel="import" href="custom_components/appstore-header.html">
+    <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
  </head>
  <body>
-    <app-toolbar><app-toolbar>
-    <app-tabs></app-tabs>
+    <appstore-header></appstore-header>
+    <appstore-cards></appstore-cards>
  </body>
 </html>

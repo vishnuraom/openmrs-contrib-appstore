@@ -1,0 +1,96 @@
+<link rel="import" href="../../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-media-query/iron-media-query.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
+
+<dom-module id="appstore-header">
+
+  <template>
+
+    <style>
+
+    app-toolbar {
+      background-color: #87cefa;
+    }
+
+    .main-header {
+      box-shadow: 3px 9px 5px 0px #848484;
+      /*--app-header-background-front-layer: {
+      background-image: url(https://drive.google.com/open?id=0B8pHnnawjxsXRk9pVW5ENjlmeVE);
+        };*/
+    }
+
+    .main-header app-toolbar div{
+      font-size:25px;
+      font-family:Roboto;
+    }
+
+    paper-tabs {
+      max-width: 700px;
+      --paper-tabs-selection-bar-color: black;
+      border-bottom: 4px;
+    }
+
+    paper-tab {
+      --paper-tab-ink: #aaa;
+      text-transform: uppercase;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    </style>
+
+      <app-header-layout>
+        <app-header class="main-header">
+
+          <app-toolbar>
+              <div>OpenMRS App Store</div>
+          </app-toolbar>
+          <app-toolbar class="tabs-bar">
+            <paper-tabs selected="{{selected}}" attr-for-selected="name" bottom-item>
+              <template is="dom-repeat" items="{{items}}">
+                <paper-tab name="{{item}}">{{item}}</paper-tab>
+              </template>
+            </paper-tabs>
+          </app-toolbar>
+
+        </app-header>
+      </app-header-layout>
+
+  </template>
+
+  <script>
+
+    Polymer({
+
+      is: 'appstore-header',
+
+      properties: {
+
+        selected: {
+          type: String,
+          value: 'Home'
+        },
+
+        items: {
+          type: Array,
+          value: function() {
+            return ['Home', 'OMOD', 'OWA', 'RA-Apps', 'Stats'];
+          }
+        }
+      }
+    });
+
+  </script>
+
+</dosm-module>

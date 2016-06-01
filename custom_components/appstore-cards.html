@@ -1,0 +1,54 @@
+<link rel="import" href="..\..\bower_components/polymer/polymer.html">
+<link rel="import" href="..\..\bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="..\..\bower_components/paper-card/paper-card.html">
+<link rel="import" href="..\..\bower_components/paper-button/paper-button.html">
+<dom-module id="appstore-cards">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      paper-card {
+        font-family: 'Roboto', 'Noto', sans-serif;
+        font-size: 14px;
+        margin-top: 25px;
+        background: white;
+        width: 70%;
+        position: relative;
+        left: 15%;
+      }
+
+    </style>
+    <iron-ajax
+    auto
+    url="https://api.bintray.com/repos/vishnuraom/omod/packages"
+    handle-as="json"
+    on-response="ajaxResponse"
+    debounce-duration="300"></iron-ajax>
+
+    <template is="dom-repeat" items="[[ajaxResponse.items]]">
+          <paper-card heading="OMOD's">
+            <div class="card-content">
+              Name:{{item.name}}
+            </div>
+            <div class="card-content">
+              Linked:{{item.linked}}
+            </div>
+            <div class="card-actions">
+              <paper-button>View More</paper-button>
+              <paper-button>Download</paper-button>
+            </div>
+          </paper-card>
+    </template>
+
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'appstore-cards',
+    });
+  })();
+  </script>
+</dom-module>
