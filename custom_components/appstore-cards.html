@@ -21,18 +21,14 @@
     </style>
     <iron-ajax
     auto
-    url="https://api.bintray.com/repos/vishnuraom/omod/packages"
+    url="http://localhost:3000/packages"
     handle-as="json"
-    on-response="ajaxResponse"
-    debounce-duration="300"></iron-ajax>
+    last-response="{{ajaxResponse}}"></iron-ajax>
 
-    <template is="dom-repeat" items="[[ajaxResponse.items]]">
-          <paper-card heading="OMOD's">
+    <template is="dom-repeat" items="[[ajaxResponse]]">
+          <paper-card heading="[[item.name]]">
             <div class="card-content">
-              Name:{{item.name}}
-            </div>
-            <div class="card-content">
-              Linked:{{item.linked}}
+              Linked:[[item.linked]]
             </div>
             <div class="card-actions">
               <paper-button>View More</paper-button>
@@ -49,6 +45,7 @@
     Polymer({
       is: 'appstore-cards',
     });
+
   })();
   </script>
 </dom-module>
