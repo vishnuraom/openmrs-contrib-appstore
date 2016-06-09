@@ -1,0 +1,8 @@
+### IntelliJ Idea ###
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Dependency directories
+bower_components
