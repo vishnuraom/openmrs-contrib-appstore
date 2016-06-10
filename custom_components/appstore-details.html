@@ -1,0 +1,32 @@
+<link rel="import" href="..\..\bower_components/polymer/polymer.html">
+
+<dom-module id="appstore-details">
+  <template>
+    <style>
+      :host {
+        display: none;
+      }
+
+      :host([active]){
+        display: block;
+      }
+    </style>
+    <!--@todo Sending dynamic parameters to Expressjs app-->
+    <div>This is a details page for <span>{{package.packageDetails}}</span></div>
+  </template>
+  <script>
+    Polymer({
+      is: 'appstore-details',
+
+      properties: {
+
+        active: {
+          type: Boolean,
+          value: false,
+          reflectToAttribute: true
+        }
+
+      }
+    });
+  </script>
+</dom-module>

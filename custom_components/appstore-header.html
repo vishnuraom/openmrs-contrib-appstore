@@ -1,15 +1,14 @@
-<link rel="import" href="../../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
-<link rel="import" href="../../bower_components/app-layout/app-drawer/app-drawer.html">
 <link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
 <link rel="import" href="../../bower_components/app-layout/app-header-layout/app-header-layout.html">
 <link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
-<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../../bower_components/iron-media-query/iron-media-query.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/paper-menu/paper-menu.html">
 <link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+<link rel="import" href="appstore-cards.html">
+
 
 <dom-module id="appstore-header">
 
@@ -35,7 +34,7 @@
 
     paper-tabs {
       max-width: 700px;
-      --paper-tabs-selection-bar-color: black;
+      --paper-tabs-selection-bar-color: red;
       border-bottom: 4px;
     }
 
@@ -44,11 +43,13 @@
       text-transform: uppercase;
     }
 
-    [hidden] {
-      display: none !important;
-    }
-
     </style>
+    <app-location route="{{route}}"></app-location>
+    <app-route
+        route="{{route}}"
+        pattern="/:category"
+        data="{{categoryData}}"
+        tail="{{subRoute}}"></app-route>
 
       <app-header-layout>
         <app-header class="main-header">
@@ -56,16 +57,23 @@
           <app-toolbar>
               <div>OpenMRS App Store</div>
           </app-toolbar>
-          <app-toolbar class="tabs-bar">
-            <paper-tabs selected="{{selected}}" attr-for-selected="name" bottom-item>
-              <template is="dom-repeat" items="{{items}}">
-                <paper-tab name="{{item}}">{{item}}</paper-tab>
+          <app-toolbar>
+            <paper-tabs selected="[[categoryData.category]]" attr-for-selected="name">
+              <template is="dom-repeat" items="[[categories]]" as="category">
+                <paper-tab name="[[category]]"><a href="/[[category]]/packages">[[category]]</a></paper-tab>
               </template>
             </paper-tabs>
           </app-toolbar>
 
         </app-header>
       </app-header-layout>
+
+      <main>
+
+        <div>Your'e in this category <span>[[categoryData.category]]</span></div>
+        <appstore-cards category="{{categoryData.category}}" route="{{subRoute}}">
+        </appstore-cards>
+      </main>
 
   </template>
 
@@ -77,18 +85,25 @@
 
       properties: {
 
-        selected: {
-          type: String,
-          value: 'Home'
-        },
-
-        items: {
+        categories: {
           type: Array,
           value: function() {
             return ['Home', 'OMOD', 'OWA', 'RA-Apps', 'Stats'];
           }
-        }
+
+        },
+
+        route: Object,
+
+        subRoute: Object,
+
+        categoryData: Object,
+
+        packageData: Object,
+
       }
+
+
     });
 
   </script>

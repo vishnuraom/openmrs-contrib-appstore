@@ -1,49 +1,40 @@
-<link rel="import" href="..\..\bower_components/polymer/polymer.html">
-<link rel="import" href="..\..\bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="..\..\bower_components/paper-card/paper-card.html">
-<link rel="import" href="..\..\bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="appstore-packages.html">
+<link rel="import" href="appstore-details.html">
+
 <dom-module id="appstore-cards">
   <template>
     <style>
-      :host {
-        display: block;
-      }
-      paper-card {
-        font-family: 'Roboto', 'Noto', sans-serif;
-        font-size: 14px;
-        margin-top: 25px;
-        background: white;
-        width: 70%;
-        position: relative;
-        left: 15%;
-      }
+    :host {
+      display: block;
+    }
 
     </style>
-    <iron-ajax
-    auto
-    url="http://localhost:3000/packages"
-    handle-as="json"
-    last-response="{{ajaxResponse}}"></iron-ajax>
 
-    <template is="dom-repeat" items="[[ajaxResponse]]">
-          <paper-card heading="[[item.name]]">
-            <div class="card-content">
-              Linked:[[item.linked]]
-            </div>
-            <div class="card-actions">
-              <paper-button>View More</paper-button>
-              <paper-button>Download</paper-button>
-            </div>
-          </paper-card>
-    </template>
+    <app-route
+        route="{{route}}"
+        pattern="/packages"
+        active="{{packagesActive}}"></app-route>
 
+    <!--@todo Sending dynamic parameters to Expressjs app-->
+    <app-route
+        route="{{route}}"
+        pattern="/test/:packageDetails"
+        data="{{packageData}}"
+        active="{{detailsActive}}"></app-route>
+
+    <appstore-packages category="{{category}}" active="{{packagesActive}}"></appstore-packages>
+    <appstore-details package="{{packageData.packageDetails}}" active="{{detailsActive}}"></appstore-details>
   </template>
   <script>
   (function() {
     'use strict';
 
     Polymer({
+
       is: 'appstore-cards',
+
     });
 
   })();

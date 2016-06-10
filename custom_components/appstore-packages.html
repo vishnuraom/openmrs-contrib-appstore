@@ -1,0 +1,70 @@
+<link rel="import" href="..\..\bower_components/polymer/polymer.html">
+<link rel="import" href="..\..\bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="..\..\bower_components/paper-card/paper-card.html">
+<link rel="import" href="..\..\bower_components/paper-button/paper-button.html">
+
+<dom-module id="appstore-packages">
+  <template>
+    <style>
+      :host {
+        display: none;
+      }
+
+      :host([active]){
+        display: block;
+      }
+
+      paper-card {
+        font-family: 'Roboto', 'Noto', sans-serif;
+        font-size: 14px;
+        margin-top: 25px;
+        background: white;
+        width: 70%;
+        position: relative;
+        left: 15%;
+      }
+
+      paper-card paper-button a {
+        text-decoration: none;
+      }
+
+    </style>
+    <!--@todo Sending dynamic parameters to Expressjs app-->
+    <iron-ajax
+    auto
+    url="http://localhost:3000/packages"
+    handle-as="json"
+    last-response="{{ajaxResponse}}"></iron-ajax>
+
+    <div >These are <span>[[category.categoryData]]</span> packages</div>
+
+    <template is="dom-repeat" items="[[ajaxResponse]]">
+          <paper-card heading="[[item.name]]">
+            <div class="card-content">
+              Linked:[[item.linked]]
+            </div>
+            <div class="card-actions">
+              <paper-button><a href="/packages/[[item.name]]">View More</a></paper-button>
+              <paper-button>Download</paper-button>
+            </div>
+          </paper-card>
+    </template>
+
+  </template>
+  <script>
+
+    Polymer({
+      is: 'appstore-packages',
+
+      properties: {
+
+        active: {
+          type: Boolean,
+          value: false,
+          reflectToAttribute: true
+        }
+
+      }
+    });
+  </script>
+</dom-module>
