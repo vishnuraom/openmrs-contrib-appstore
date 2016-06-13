@@ -9,7 +9,6 @@
 <link rel="import" href="../../bower_components/app-route/app-location.html">
 <link rel="import" href="appstore-cards.html">
 
-
 <dom-module id="appstore-header">
 
   <template>
@@ -44,6 +43,7 @@
     }
 
     </style>
+
     <app-location route="{{route}}"></app-location>
     <app-route
         route="{{route}}"
@@ -69,7 +69,6 @@
       </app-header-layout>
 
       <main>
-
         <div>Your'e in this category <span>[[categoryData.category]]</span></div>
         <appstore-cards category="{{categoryData.category}}" route="{{subRoute}}">
         </appstore-cards>
@@ -97,12 +96,9 @@
 
         subRoute: Object,
 
-        categoryData: Object,
-
-        packageData: Object,
+        categoryData: Object
 
       }
-
 
     });
 
