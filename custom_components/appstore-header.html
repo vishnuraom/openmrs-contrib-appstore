@@ -1,12 +1,14 @@
-<link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../../bower_components/app-layout/app-scroll-effects/effects/waterfall.html">
 <link rel="import" href="../../bower_components/app-layout/app-header-layout/app-header-layout.html">
-<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../../bower_components/paper-menu/paper-menu.html">
 <link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="../../bower_components/app-route/app-route.html">
-<link rel="import" href="../../bower_components/app-route/app-location.html">
 <link rel="import" href="appstore-cards.html">
 
 <dom-module id="appstore-header">
@@ -14,70 +16,90 @@
   <template>
 
     <style>
+      app-toolbar {
+        background-color: #87cefa;
+      }
 
-    app-toolbar {
-      background-color: #87cefa;
-    }
+      .main-header {
+        box-shadow: 3px 9px 5px 0px #848484;
+      }
 
-    .main-header {
-      box-shadow: 3px 9px 5px 0px #848484;
-      /*--app-header-background-front-layer: {
-      background-image: url(https://drive.google.com/open?id=0B8pHnnawjxsXRk9pVW5ENjlmeVE);
-        };*/
-    }
+      .main-header app-toolbar div {
+        font-size: 30px;
+        font-family: Roboto;
+      }
 
-    .main-header app-toolbar div{
-      font-size:25px;
-      font-family:Roboto;
-    }
+      paper-tabs {
+        --paper-tabs-selection-bar-color: #000000;
+        color: #31f0ef;
+        font-size: 17px;
+        width: 700px;
+        cursor: pointer;
+      }
 
-    paper-tabs {
-      max-width: 700px;
-      --paper-tabs-selection-bar-color: red;
-      border-bottom: 4px;
-    }
+      paper-tab {
+        @apply(--layout-flex-none);
+        padding: 0;
+        --paper-tab-ink: #31f0ef;
+      }
 
-    paper-tab {
-      --paper-tab-ink: #aaa;
-      text-transform: uppercase;
-    }
+      paper-tab a {
+        //rules defined in iron-flex-layout.html
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);
+        font-weight: 600;
+        text-decoration: none;
+        color: #000000;
+        padding: 0 20px;
+        height: auto;
+      }
+
+      .spacer {
+        @apply(--layout);
+        @apply(--layout-flex-auto);
+        @apply(--layout-center-center);
+      }
+
+      .logo {
+        background-image: url(http://res.cloudinary.com/dx1h6ttme/image/upload/c_scale,w_65/v1466247554/860776_quwwuj.png);
+        width: 60px;
+        height: 60px;
+        background-size: 100% 100%;
+      }
 
     </style>
+    <app-location route="{{route}}" use-hash-as-path></app-location>
+    <app-route route="{{route}}" pattern="/:category" data="{{categoryData}}" tail="{{subRoute}}"></app-route>
 
-    <app-location route="{{route}}"></app-location>
-    <app-route
-        route="{{route}}"
-        pattern="/:category"
-        data="{{categoryData}}"
-        tail="{{subRoute}}"></app-route>
+    <app-header-layout>
+      <app-header class="main-header" fixed condenses reveals effects="waterfall">
+        <app-toolbar>
+          <div class="spacer">
+               <div class="logo"></div>
+               <div>OpenMRS App Store</div>
+          </div>
+        </app-toolbar>
+        <app-toolbar>
+          <paper-tabs selected="[[categoryData.category]]" attr-for-selected="name">
+            <template is="dom-repeat" items="[[categories]]" as="category">
+              <paper-tab name="[[category]]"><a href="#/[[category]]/packages">[[category]]</a></paper-tab>
+            </template>
+          </paper-tabs>
+        </app-toolbar>
 
-      <app-header-layout>
-        <app-header class="main-header">
+      </app-header>
+    </app-header-layout>
 
-          <app-toolbar>
-              <div>OpenMRS App Store</div>
-          </app-toolbar>
-          <app-toolbar>
-            <paper-tabs selected="[[categoryData.category]]" attr-for-selected="name">
-              <template is="dom-repeat" items="[[categories]]" as="category">
-                <paper-tab name="[[category]]"><a href="/[[category]]/packages">[[category]]</a></paper-tab>
-              </template>
-            </paper-tabs>
-          </app-toolbar>
+    <main>
 
-        </app-header>
-      </app-header-layout>
-
-      <main>
-        <div>Your'e in this category <span>[[categoryData.category]]</span></div>
-        <appstore-cards category="{{categoryData.category}}" route="{{subRoute}}">
-        </appstore-cards>
-      </main>
+      <div>Your'e in <span>[[categoryData.category]]</span> category </div>
+      <appstore-cards category="{{categoryData.category}}" route="{{subRoute}}">
+      </appstore-cards>
+    </main>
 
   </template>
 
   <script>
-
     Polymer({
 
       is: 'appstore-header',
@@ -89,19 +111,25 @@
           value: function() {
             return ['Home', 'OMOD', 'OWA', 'RA-Apps', 'Stats'];
           }
-
         },
 
         route: Object,
 
         subRoute: Object,
 
-        categoryData: Object
+        categoryData: Object,
 
+        packageData: Object,
+
+      },
+
+      attached: function() {
+        if (!this.route.path) {
+          this.set('route.path', '/OMOD/packages');
+        }
       }
 
     });
-
   </script>
 
 </dom-module>
