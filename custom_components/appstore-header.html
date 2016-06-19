@@ -81,9 +81,21 @@
         </app-toolbar>
         <app-toolbar>
           <paper-tabs selected="[[categoryData.category]]" attr-for-selected="name">
-            <template is="dom-repeat" items="[[categories]]" as="category">
-              <paper-tab name="[[category]]"><a href="#/[[category]]/packages">[[category]]</a></paper-tab>
-            </template>
+            <paper-tab name="home" link>
+              <a href="#/home" tabindex="-1">Home</a>
+            </paper-tab>
+            <paper-tab name="omod" link>
+              <a href="#/omod/packages" tabindex="-1">OMOD</a>
+            </paper-tab>
+            <paper-tab name="owa"link>
+              <a href="#/owa/packages" tabindex="-1">OWA</a>
+            </paper-tab>
+            <paper-tab name="raapps" link>
+              <a href="#/ra-apps/packages" tabindex="-1">RA-APPS</a>
+            </paper-tab>
+            <paper-tab name="stats" link>
+              <a href="#/stats" tabindex="-1">Stats</a>
+            </paper-tab>
           </paper-tabs>
         </app-toolbar>
 
@@ -91,7 +103,6 @@
     </app-header-layout>
 
     <main>
-
       <div>Your'e in <span>[[categoryData.category]]</span> category </div>
       <appstore-cards category="{{categoryData.category}}" route="{{subRoute}}">
       </appstore-cards>
@@ -106,13 +117,6 @@
 
       properties: {
 
-        categories: {
-          type: Array,
-          value: function() {
-            return ['Home', 'OMOD', 'OWA', 'RA-Apps', 'Stats'];
-          }
-        },
-
         route: Object,
 
         subRoute: Object,
@@ -125,7 +129,7 @@
 
       attached: function() {
         if (!this.route.path) {
-          this.set('route.path', '/OMOD/packages');
+          this.set('route.path', '/omod/packages');
         }
       }
 
