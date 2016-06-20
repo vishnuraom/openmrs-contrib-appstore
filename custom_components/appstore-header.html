@@ -98,16 +98,11 @@
             </paper-tab>
           </paper-tabs>
         </app-toolbar>
-
       </app-header>
+
+      <appstore-cards category="{{categoryData.category}}" route="{{subRoute}}"></appstore-cards>
+
     </app-header-layout>
-
-    <main>
-      <div>Your'e in <span>[[categoryData.category]]</span> category </div>
-      <appstore-cards category="{{categoryData.category}}" route="{{subRoute}}">
-      </appstore-cards>
-    </main>
-
   </template>
 
   <script>

@@ -1,4 +1,10 @@
 <link rel="import" href="..\..\bower_components/polymer/polymer.html">
+<link rel="import" href="..\..\bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="..\..\bower_components/paper-material/paper-material.html">
+<link rel="import" href="..\..\bower_components/font-roboto/roboto.html">
+<link href="https://fonts.googleapis.com/css?family=Arima+Madurai" rel="stylesheet">
+<link rel="import" href="..\..\bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="..\..\bower_components/paper-fab/paper-fab.html">
 
 <dom-module id="appstore-details">
   <template>
@@ -10,9 +16,85 @@
       :host([active]){
         display: block;
       }
+
+      #heading{
+        font-family: 'Arima Madurai', cursive;
+        width: 700px;
+        margin-top: 8px;
+        position: relative;
+      }
+
+      #heading span{
+        font-size: 20px;
+      }
+
+      paper-material {
+        font-family: 'Arima Madurai',cursive;
+        width: 700px;
+        background-color:white;
+        padding: 10px;
+        font-size: 20px;
+        margin-top:30px;
+        margin-left: 10%;
+      }
+
+      paper-material div a {
+        font-weight: 600;
+        text-decoration: none;
+        color: #000000;
+      }
+
+      paper-fab{
+        position: absolute;
+        top: 117px;
+        right: 60px;
+        --paper-fab-background: var(--paper-light-blue-500);
+        --paper-fab-keyboard-focus-background: var(--paper-light-blue-900);
+      }
+
     </style>
-    <!--@todo Sending dynamic parameters to Expressjs app-->
-    <div>This is a details page for <span>{{package.packageDetails}}</span></div>
+
+    <app-route
+        route="{{route}}"
+        pattern="/version/:versionDetails"
+        data="{{versionData}}"
+        active="{{versionActive}}"></app-route>
+
+    <iron-ajax
+        auto
+        url="http://localhost:3000/details"
+        params='{{_getParams(category,package)}}'
+        handle-as="json"
+        last-response="{{ajaxResponse}}"></iron-ajax>
+
+    <paper-material id="heading" elevation="5" animated>
+        <h2>{{package}}</h2>
+        <span>by {{ajaxResponse.owner}}</span>
+        <a href="https://bintray.com/vishnuraom/{{category}}/download_file?file_path={{package}}-{{ajaxResponse.latest_version}}.{{category}}" download tabindex="-1">
+        <paper-fab icon="file-download" title="download">Download</paper-fab>
+        </a>
+    </paper-material>
+
+    <paper-material elevation="5" animated>
+       <h3>name:{{ajaxResponse.name}}</h3>
+       <div>repo:{{ajaxResponse.repo}}</div> <hr>
+       <div>Owner:{{ajaxResponse.owner}}</div> <hr>
+       <div>Description:{{ajaxResponse.desc}}</div> <hr>
+       <div>labels:{{ajaxResponse.labels}}</div> <hr>
+       <div>attribute_names:{{ajaxResponse.attribute_names}}</div> <hr>
+       <div>licenses:{{ajaxResponse.licenses}}</div> <hr>
+       <div>created:{{ajaxResponse.created}}</div> <hr>
+       <div>website_url:<a href="{{ajaxResponse.website_url}}" target="_blank">{{ajaxResponse.website_url}}</a></div> <hr>
+       <div>issue_tracker_url:<a href="{{ajaxResponse.issue_tracker_url}}" target="_blank"> {{ajaxResponse.issue_tracker_url}}</a></div> <hr>
+       <div>github_repo:<a href="{{ajaxResponse.github_repo}}" target="_blank">{{ajaxResponse.github_repo}}</a></div> <hr>
+       <div>linked_to_repos:{{ajaxResponse.linked_to_repos}}</div> <hr>
+       <div>latest_version:{{ajaxResponse.latest_version}}</div> <hr>
+       <div>last updated:{{ajaxResponse.updated}}</div> <hr>
+       <div>rating_count:{{ajaxResponse.rating_count}}</div> <hr>
+       <div>vcs_url: <a href="{{ajaxResponse.vcs_url}}" target="_blank">{{ajaxResponse.vcs_url}}</a></div> <hr>
+       <div>maturity:{{ajaxResponse.maturity}}</div> <hr>
+    </paper-material>
+
   </template>
   <script>
     Polymer({
@@ -26,7 +108,12 @@
           reflectToAttribute: true
         }
 
+      },
+
+      _getParams:function(category,package) {
+        return {name:package,repo:category};
       }
+
     });
   </script>
 </dom-module>

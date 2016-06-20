@@ -10,6 +10,10 @@
         display: block;
       }
 
+      :host([active]){
+        display: block;
+      }
+
     </style>
 
     <app-route
@@ -17,23 +21,30 @@
         pattern="/packages"
         active="{{packagesActive}}"></app-route>
 
-    <!--@todo Sending dynamic parameters to Expressjs app-->
     <app-route
         route="{{route}}"
-        pattern="/test/:packageDetails"
+        pattern="/details/:packageDetails"
         data="{{packageData}}"
         active="{{detailsActive}}"></app-route>
 
     <appstore-packages category="{{category}}" active="{{packagesActive}}"></appstore-packages>
-    <appstore-details package="{{packageData.packageDetails}}" active="{{detailsActive}}"></appstore-details>
+    <appstore-details  category="{{category}}" package="{{packageData.packageDetails}}" active="{{detailsActive}}"></appstore-details>
   </template>
   <script>
-
-    Polymer({
+  Polymer({
 
       is: 'appstore-cards',
 
-    });
+      properties: {
 
+        active: {
+          type: Boolean,
+          value: false,
+          reflectToAttribute: true
+        }
+
+      }
+
+    });
   </script>
 </dom-module>
