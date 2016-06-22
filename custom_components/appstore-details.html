@@ -1,10 +1,10 @@
-<link rel="import" href="..\..\bower_components/polymer/polymer.html">
-<link rel="import" href="..\..\bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="..\..\bower_components/paper-material/paper-material.html">
-<link rel="import" href="..\..\bower_components/font-roboto/roboto.html">
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../../bower_components/font-roboto/roboto.html">
 <link href="https://fonts.googleapis.com/css?family=Arima+Madurai" rel="stylesheet">
-<link rel="import" href="..\..\bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="..\..\bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
 
 <dom-module id="appstore-details">
   <template>
@@ -17,21 +17,23 @@
         display: block;
       }
 
-      #heading{
+      .heading{
         font-family: 'Arima Madurai', cursive;
-        width: 700px;
+        width: 750px;
         margin-top: 8px;
         position: relative;
+        background-color: #607D8B;
+        width: auto;
       }
 
-      #heading span{
+      .heading span{
         font-size: 20px;
       }
 
-      paper-material {
+      .details {
         font-family: 'Arima Madurai',cursive;
-        width: 700px;
-        background-color:white;
+        width: 750px;
+        background-color: #607D8B;
         padding: 10px;
         font-size: 20px;
         margin-top:30px;
@@ -67,33 +69,57 @@
         handle-as="json"
         last-response="{{ajaxResponse}}"></iron-ajax>
 
-    <paper-material id="heading" elevation="5" animated>
+    <paper-material class="heading" elevation="5" animated>
         <h2>{{package}}</h2>
         <span>by {{ajaxResponse.owner}}</span>
-        <a href="https://bintray.com/vishnuraom/{{category}}/download_file?file_path={{package}}-{{ajaxResponse.latest_version}}.{{category}}" download tabindex="-1">
+        <a href="https://bintray.com/vishnuraom/{{category}}/download_file?file_path=" download tabindex="-1">
         <paper-fab icon="file-download" title="download">Download</paper-fab>
         </a>
     </paper-material>
 
-    <paper-material elevation="5" animated>
-       <h3>name:{{ajaxResponse.name}}</h3>
-       <div>repo:{{ajaxResponse.repo}}</div> <hr>
-       <div>Owner:{{ajaxResponse.owner}}</div> <hr>
-       <div>Description:{{ajaxResponse.desc}}</div> <hr>
-       <div>labels:{{ajaxResponse.labels}}</div> <hr>
-       <div>attribute_names:{{ajaxResponse.attribute_names}}</div> <hr>
-       <div>licenses:{{ajaxResponse.licenses}}</div> <hr>
-       <div>created:{{ajaxResponse.created}}</div> <hr>
-       <div>website_url:<a href="{{ajaxResponse.website_url}}" target="_blank">{{ajaxResponse.website_url}}</a></div> <hr>
-       <div>issue_tracker_url:<a href="{{ajaxResponse.issue_tracker_url}}" target="_blank"> {{ajaxResponse.issue_tracker_url}}</a></div> <hr>
-       <div>github_repo:<a href="{{ajaxResponse.github_repo}}" target="_blank">{{ajaxResponse.github_repo}}</a></div> <hr>
-       <div>linked_to_repos:{{ajaxResponse.linked_to_repos}}</div> <hr>
-       <div>latest_version:{{ajaxResponse.latest_version}}</div> <hr>
-       <div>last updated:{{ajaxResponse.updated}}</div> <hr>
+    <paper-material class="details" elevation="5" animated>
+       <h3>Package Name: {{ajaxResponse.name}}</h3>
+       <div>Repo: {{ajaxResponse.repo}}</div> <hr>
+       <div>Owner: {{ajaxResponse.owner}}</div> <hr>
+       <div>Description: {{ajaxResponse.desc}}</div> <hr>
+       <div>Labels: {{ajaxResponse.labels}}</div> <hr>
+       <div>Attribute_names: {{ajaxResponse.attribute_names}}</div> <hr>
+       <div>Licenses: {{ajaxResponse.licenses}}</div> <hr>
+       <div>Created: {{ajaxResponse.created}}</div> <hr>
+       <div>Last updated: {{ajaxResponse.updated}}</div> <hr>
+       <div>Website: <a href="{{ajaxResponse.website_url}}" target="_blank">{{ajaxResponse.website_url}}</a></div> <hr>
+       <div>Issue Tracker: <a href="{{ajaxResponse.issue_tracker_url}}" target="_blank"> {{ajaxResponse.issue_tracker_url}}</a></div> <hr>
+       <div>Github repo: <a href="{{ajaxResponse.github_repo}}" target="_blank">{{ajaxResponse.github_repo}}</a></div> <hr>
+       <div>Linked to repos: {{ajaxResponse.linked_to_repos}}</div> <hr>
+       <div>Latest Version: {{ajaxResponse.latest_version}}</div> <hr>
        <div>rating_count:{{ajaxResponse.rating_count}}</div> <hr>
        <div>vcs_url: <a href="{{ajaxResponse.vcs_url}}" target="_blank">{{ajaxResponse.vcs_url}}</a></div> <hr>
        <div>maturity:{{ajaxResponse.maturity}}</div> <hr>
     </paper-material>
+
+    <paper-material class="heading" elevation="5" animated>
+        <h2>Available Versions of {{package}}</h2>
+    </paper-material>
+
+    <iron-ajax
+        auto
+        url="http://localhost:3000/packagefiles"
+        params='{{_getParams(category,package)}}'
+        handle-as="json"
+        last-response="{{packageVersions}}"></iron-ajax>
+
+    <template is="dom-repeat" items="[[packageVersions]]">
+        <paper-material class="details" elevation="5" animated>
+          <h3>name:{{item.name}}</h3><hr>
+          <div>version:{{item.version}}</div> <hr>
+          <div>package:{{item.package}}</div> <hr>
+          <div>repo:{{item.repo}}</div> <hr>
+          <div>created:{{item.created}}</div> <hr>
+          <div>size:{{item.size}}</div> <hr>
+          <div>sha1:{{item.sha1}}</a></div> <hr>
+          <div>sha256:{{item.sha256}}</div> <hr>
+        </paper-material>
+    </template>
 
   </template>
   <script>

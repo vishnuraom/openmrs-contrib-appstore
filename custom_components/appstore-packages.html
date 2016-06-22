@@ -1,7 +1,7 @@
-<link rel="import" href="..\..\bower_components/polymer/polymer.html">
-<link rel="import" href="..\..\bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="..\..\bower_components/paper-card/paper-card.html">
-<link rel="import" href="..\..\bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
 
 <dom-module id="appstore-packages">
   <template>
@@ -28,8 +28,35 @@
         text-decoration: none;
       }
 
+      paper-material {
+        font-family: 'Arima Madurai',cursive;
+        width: 750px;
+        background-color:white;
+        padding: 10px;
+        font-size: 20px;
+        margin-top:30px;
+        margin-left: 10%;
+      }
+
     </style>
-    <!--@todo Sending dynamic parameters to Expressjs app-->
+
+    <iron-ajax
+    auto
+    url="http://localhost:3000/repositories"
+    params='{{_getParams(category)}}'
+    handle-as="json"
+    last-response="{{repoInfo}}"></iron-ajax>
+
+    <paper-material elevation="5" animated>
+       <h3>Repo:{{repoInfo.name}}</h3>
+       <div>Owner:{{repoInfo.owner}}</div> <hr>
+       <div>Type:{{repoInfo.type}}</div> <hr>
+       <div>Description:{{repoInfo.desc}}</div> <hr>
+       <div>Labels:{{repoInfo.labels}}</div> <hr>
+       <div>Created:{{repoInfo.created}}</div> <hr>
+       <div>package_count:{{repoInfo.pacakge_count}}</div> <hr>
+    </paper-material>
+
     <iron-ajax
     auto
     url="http://localhost:3000/packages"
@@ -37,12 +64,10 @@
     handle-as="json"
     last-response="{{ajaxResponse}}"></iron-ajax>
 
-    <div >These are <span>[[category]]</span> packages----appstore-packages page</div>
-
     <template is="dom-repeat" items="[[ajaxResponse]]">
           <paper-card heading="[[item.name]]">
             <div class="card-actions">
-              <paper-button><a href="/packages/[[item.name]]">View More</a></paper-button>
+              <paper-button raised><a href="#/[[category]]/details/[[item.name]]">View More</a></paper-button>
             </div>
           </paper-card>
     </template>
@@ -62,7 +87,7 @@
         }
 
       },
-      //http://goo.gl/7i11u9 Because of limitation of dynamic attributes
+
       _getParams:function(category) {
         return {repo:category};
       }
