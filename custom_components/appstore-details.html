@@ -19,11 +19,11 @@
 
       .heading{
         font-family: 'Arima Madurai', cursive;
-        width: 750px;
         margin-top: 8px;
         position: relative;
         background-color: #607D8B;
         width: auto;
+        padding: 8px;
       }
 
       .heading span{
@@ -69,10 +69,17 @@
         handle-as="json"
         last-response="{{ajaxResponse}}"></iron-ajax>
 
+    <iron-ajax
+        auto
+        url="http://localhost:3000/packagefiles"
+        params='{{_getParams(category,package)}}'
+        handle-as="json"
+        last-response="{{packageVersions}}"></iron-ajax>
+
     <paper-material class="heading" elevation="5" animated>
         <h2>{{package}}</h2>
         <span>by {{ajaxResponse.owner}}</span>
-        <a href="https://bintray.com/vishnuraom/{{category}}/download_file?file_path=" download tabindex="-1">
+        <a href="https://bintray.com/vishnuraom/{{category}}/download_file?file_path={{_getPath(ajaxResponse.latest_version,packageVersions)}}" download tabindex="-1">
         <paper-fab icon="file-download" title="download">Download</paper-fab>
         </a>
     </paper-material>
@@ -100,13 +107,6 @@
     <paper-material class="heading" elevation="5" animated>
         <h2>Available Versions of {{package}}</h2>
     </paper-material>
-
-    <iron-ajax
-        auto
-        url="http://localhost:3000/packagefiles"
-        params='{{_getParams(category,package)}}'
-        handle-as="json"
-        last-response="{{packageVersions}}"></iron-ajax>
 
     <template is="dom-repeat" items="[[packageVersions]]">
         <paper-material class="details" elevation="5" animated>
@@ -138,7 +138,18 @@
 
       _getParams:function(category,package) {
         return {name:package,repo:category};
+      },
+
+      _getPath:function(latestversion,versions) {
+        for(var i=0;i<versions.length;i++){
+            var obj = versions[i];
+            if (latestversion == obj.version) {
+              return obj.path;
+              break;
+            }
+        }
       }
+
 
     });
   </script>
