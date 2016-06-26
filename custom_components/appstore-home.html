@@ -1,0 +1,64 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/google-youtube/google-youtube.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-material/paper-material.html">
+
+<dom-module id="appstore-home">
+  <template>
+    <style>
+    :host {
+      display: none;
+    }
+
+    :host([active]){
+      display: block;
+    }
+
+    paper-material{
+      padding: 10px;
+      margin-top: 20px;
+      font-size: 30px;
+      height: auto;
+      width: auto;
+      font-weight: 100;
+      font-family: "Roboto";
+    }
+
+    google-youtube{
+      margin-top: 30px;
+      position: relative;
+      left: 15%;
+    }
+
+    </style>
+    <paper-material elevation="5" animated>
+        Welcome to OpenMRS App Store,you can find some useful content here for getting started.
+    </paper-material>
+
+    <google-youtube
+      video-id="sO9YsVFdscI"
+      height="480px"
+      width="854px"
+      rel="0"
+      start="5"
+      autoplay="0">
+    </google-youtube>
+
+  </template>
+  <script>
+    Polymer({
+
+      is: 'appstore-home',
+
+      properties: {
+
+        active: {
+          type: Boolean,
+          value: false,
+          reflectToAttribute: true
+        }
+
+      }
+    });
+  </script>
+</dom-module>

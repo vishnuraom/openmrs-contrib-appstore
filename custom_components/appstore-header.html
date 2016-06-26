@@ -11,6 +11,7 @@
 <link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="../../bower_components/app-route/app-route.html">
 <link rel="import" href="appstore-cards.html">
+<link rel="import" href="appstore-home.html">
 
 <dom-module id="appstore-header">
 
@@ -71,6 +72,7 @@
     </style>
     <app-location route="{{route}}" use-hash-as-path></app-location>
     <app-route route="{{route}}" pattern="/:category" data="{{categoryData}}" tail="{{subRoute}}"></app-route>
+    <app-route route="{{route}}" pattern="/home" active="{{homeActive}}" ></app-route>
 
     <app-header-layout>
       <app-header class="main-header" fixed condenses reveals effects="waterfall">
@@ -102,7 +104,7 @@
       </app-header>
 
       <appstore-cards category="{{categoryData.category}}" route="{{subRoute}}"></appstore-cards>
-
+      <appstore-home active="{{homeActive}}"></appstore-home>
     </app-header-layout>
   </template>
 
