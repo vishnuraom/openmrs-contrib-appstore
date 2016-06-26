@@ -2,6 +2,7 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
 
 <dom-module id="appstore-packages">
   <template>
@@ -14,28 +15,57 @@
         display: block;
       }
 
-      paper-card {
-        font-family: 'Roboto', 'Noto', sans-serif;
-        font-size: 14px;
-        margin-top: 25px;
-        background: white;
-        width: 70%;
+      iron-list {
+        margin-top: 90px;
+        padding-bottom: 16px;
+      }
+
+      .packageContent {
+        @apply(--layout);
+        background-color: #ddd;
         position: relative;
-        left: 15%;
+        width: 380px;
+        height: 300px;
+        margin: 20px;
       }
 
-      paper-card paper-button a {
-        text-decoration: none;
+      .packageContent > paper-material {
+        @apply(--layout-flex);
       }
 
-      paper-material {
-        font-family: 'Arima Madurai',cursive;
-        width: 750px;
-        background-color:white;
+      #info {
+        font-family: 'Roboto', 'Noto', sans-serif;
+        position: relative;
+        width: auto;
         padding: 10px;
-        font-size: 20px;
-        margin-top:30px;
-        margin-left: 10%;
+        margin-top:40px;
+      }
+
+      #info span{
+        font-weight: 100;
+        font-size: 80px;
+      }
+
+      #info div{
+        padding: 10px;
+        font-weight: 300;
+        font-size: 22px;
+      }
+
+      #rect a{
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+      }
+
+      #rect div{
+        font-family: 'Roboto', 'Noto', sans-serif;
+        font-weight: 300;
+        font-size: 32px;
+        padding: 16px;
       }
 
     </style>
@@ -47,14 +77,11 @@
     handle-as="json"
     last-response="{{repoInfo}}"></iron-ajax>
 
-    <paper-material elevation="5" animated>
-       <h3>Repo:{{repoInfo.name}}</h3>
-       <div>Owner:{{repoInfo.owner}}</div> <hr>
-       <div>Type:{{repoInfo.type}}</div> <hr>
-       <div>Description:{{repoInfo.desc}}</div> <hr>
-       <div>Labels:{{repoInfo.labels}}</div> <hr>
-       <div>Created:{{repoInfo.created}}</div> <hr>
-       <div>package_count:{{repoInfo.pacakge_count}}</div> <hr>
+    <paper-material id="info"elevation="5" animated>
+       <span>{{repoInfo.name}}.</span>
+       <div>{{repoInfo.desc}}</div>
+       <div>Created On: {{repoInfo.created}}</div>
+       <div>Packages Available: {{repoInfo.package_count}}</div>
     </paper-material>
 
     <iron-ajax
@@ -64,13 +91,18 @@
     handle-as="json"
     last-response="{{ajaxResponse}}"></iron-ajax>
 
-    <template is="dom-repeat" items="[[ajaxResponse]]">
-          <paper-card heading="[[item.name]]">
-            <div class="card-actions">
-              <paper-button raised><a href="#/[[category]]/details/[[item.name]]">View More</a></paper-button>
-            </div>
-          </paper-card>
-    </template>
+    <iron-list items="[[ajaxResponse]]" grid>
+      <template>
+        <div class="packageContainer">
+          <div class="packageContent" tabindex$="[[tabIndex]]">
+              <paper-material elevation="5" animated id="rect">
+                  <a href="#/[[category]]/details/[[item.name]]"></a>
+                  <div>[[item.name]]</div>
+              </paper-material>
+          </div>
+        </div>
+      </template>
+    </iron-list>
 
   </template>
   <script>

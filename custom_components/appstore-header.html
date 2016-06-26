@@ -1,3 +1,4 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/app-layout/app-scroll-effects/effects/waterfall.html">
 <link rel="import" href="../../bower_components/app-layout/app-header-layout/app-header-layout.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
@@ -35,11 +36,11 @@
         font-size: 17px;
         width: 700px;
         cursor: pointer;
+        font-style: bold;
       }
 
       paper-tab {
         @apply(--layout-flex-none);
-        padding: 0;
         --paper-tab-ink: #31f0ef;
       }
 
@@ -47,10 +48,10 @@
         //rules defined in iron-flex-layout.html
         @apply(--layout-horizontal);
         @apply(--layout-center-center);
-        font-weight: 600;
         text-decoration: none;
         color: #000000;
         padding: 0 20px;
+        font-weight: 300;
         height: auto;
       }
 
@@ -90,8 +91,8 @@
             <paper-tab name="owa"link>
               <a href="#/owa/packages" tabindex="-1">OWA</a>
             </paper-tab>
-            <paper-tab name="raapps" link>
-              <a href="#/ra-apps/packages" tabindex="-1">RA-APPS</a>
+            <paper-tab name="docker" link>
+              <a href="#/docker/packages" tabindex="-1">Docker</a>
             </paper-tab>
             <paper-tab name="stats" link>
               <a href="#/stats" tabindex="-1">Stats</a>

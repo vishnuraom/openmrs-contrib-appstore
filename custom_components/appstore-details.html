@@ -2,7 +2,6 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/paper-material/paper-material.html">
 <link rel="import" href="../../bower_components/font-roboto/roboto.html">
-<link href="https://fonts.googleapis.com/css?family=Arima+Madurai" rel="stylesheet">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
 
@@ -18,26 +17,47 @@
       }
 
       .heading{
-        font-family: 'Arima Madurai', cursive;
-        margin-top: 8px;
-        position: relative;
-        background-color: #607D8B;
-        width: auto;
+        font-size: 60px;
+        font-family: 'Roboto', 'Noto', sans-serif;
+        font-weight: 100;
         padding: 8px;
+        position: relative;
+        margin-top: 8px;
+        background-color: #ffffff;
+        height: 140px;
+      }
+
+      .heading paper-fab{
+        position: absolute;
+        bottom: -16px;
+        right: 20px;
+        --paper-fab-background: var(--paper-light-blue-500);
+        --paper-fab-keyboard-focus-background: var(--paper-light-blue-900);
       }
 
       .heading span{
-        font-size: 20px;
+        padding: 8px;
+        font-size: 30px;
       }
 
       .details {
-        font-family: 'Arima Madurai',cursive;
-        width: 750px;
-        background-color: #607D8B;
-        padding: 10px;
+        font-family: "Roboto";
+        font-weight: 300;
+        width: auto;
+        background-color: #ffffff;
         font-size: 20px;
         margin-top:30px;
-        margin-left: 10%;
+      }
+
+      .details div{
+        padding: 10px;
+        font-weight: 300;
+        font-size:22px;
+      }
+
+      #overview{
+        padding: 8px;
+        font-size: 30px;
       }
 
       paper-material div a {
@@ -45,14 +65,7 @@
         text-decoration: none;
         color: #000000;
       }
-
-      paper-fab{
-        position: absolute;
-        top: 117px;
-        right: 60px;
-        --paper-fab-background: var(--paper-light-blue-500);
-        --paper-fab-keyboard-focus-background: var(--paper-light-blue-900);
-      }
+    }
 
     </style>
 
@@ -77,7 +90,7 @@
         last-response="{{packageVersions}}"></iron-ajax>
 
     <paper-material class="heading" elevation="5" animated>
-        <h2>{{package}}</h2>
+        <div>{{package}}</div>
         <span>by {{ajaxResponse.owner}}</span>
         <a href="https://bintray.com/vishnuraom/{{category}}/download_file?file_path={{_getPath(ajaxResponse.latest_version,packageVersions)}}" download tabindex="-1">
         <paper-fab icon="file-download" title="download">Download</paper-fab>
@@ -85,39 +98,39 @@
     </paper-material>
 
     <paper-material class="details" elevation="5" animated>
-       <h3>Package Name: {{ajaxResponse.name}}</h3>
-       <div>Repo: {{ajaxResponse.repo}}</div> <hr>
-       <div>Owner: {{ajaxResponse.owner}}</div> <hr>
-       <div>Description: {{ajaxResponse.desc}}</div> <hr>
-       <div>Labels: {{ajaxResponse.labels}}</div> <hr>
-       <div>Attribute_names: {{ajaxResponse.attribute_names}}</div> <hr>
-       <div>Licenses: {{ajaxResponse.licenses}}</div> <hr>
-       <div>Created: {{ajaxResponse.created}}</div> <hr>
-       <div>Last updated: {{ajaxResponse.updated}}</div> <hr>
-       <div>Website: <a href="{{ajaxResponse.website_url}}" target="_blank">{{ajaxResponse.website_url}}</a></div> <hr>
-       <div>Issue Tracker: <a href="{{ajaxResponse.issue_tracker_url}}" target="_blank"> {{ajaxResponse.issue_tracker_url}}</a></div> <hr>
-       <div>Github repo: <a href="{{ajaxResponse.github_repo}}" target="_blank">{{ajaxResponse.github_repo}}</a></div> <hr>
-       <div>Linked to repos: {{ajaxResponse.linked_to_repos}}</div> <hr>
-       <div>Latest Version: {{ajaxResponse.latest_version}}</div> <hr>
-       <div>rating_count:{{ajaxResponse.rating_count}}</div> <hr>
-       <div>vcs_url: <a href="{{ajaxResponse.vcs_url}}" target="_blank">{{ajaxResponse.vcs_url}}</a></div> <hr>
-       <div>maturity:{{ajaxResponse.maturity}}</div> <hr>
+       <div id="overview">Overview</div>
+       <div>Repo: {{ajaxResponse.repo}}</div>
+       <div>Owner: {{ajaxResponse.owner}}</div>
+       <div>Description: {{ajaxResponse.desc}}</div>
+       <div>Labels: {{ajaxResponse.labels}}</div>
+       <div>Attribute_names: {{ajaxResponse.attribute_names}}</div>
+       <div>Licenses: {{ajaxResponse.licenses}}</div>
+       <div>Created: {{ajaxResponse.created}}</div>
+       <div>Last updated: {{ajaxResponse.updated}}</div>
+       <div>Website: <a href="{{ajaxResponse.website_url}}" target="_blank">{{ajaxResponse.website_url}}</a></div>
+       <div>Issue Tracker: <a href="{{ajaxResponse.issue_tracker_url}}" target="_blank"> {{ajaxResponse.issue_tracker_url}}</a></div>
+       <div>Github repo: <a href="{{ajaxResponse.github_repo}}" target="_blank">{{ajaxResponse.github_repo}}</a></div>
+       <div>Linked to repos: {{ajaxResponse.linked_to_repos}}</div>
+       <div>Latest Version: {{ajaxResponse.latest_version}}</div>
+       <div>rating_count:{{ajaxResponse.rating_count}}</div>
+       <div>vcs_url: <a href="{{ajaxResponse.vcs_url}}" target="_blank">{{ajaxResponse.vcs_url}}</a></div>
+       <div>maturity:{{ajaxResponse.maturity}}</div>
     </paper-material>
 
     <paper-material class="heading" elevation="5" animated>
-        <h2>Available Versions of {{package}}</h2>
+        <div>Available Versions of {{package}}</div>
     </paper-material>
 
     <template is="dom-repeat" items="[[packageVersions]]">
         <paper-material class="details" elevation="5" animated>
-          <h3>name:{{item.name}}</h3><hr>
-          <div>version:{{item.version}}</div> <hr>
-          <div>package:{{item.package}}</div> <hr>
-          <div>repo:{{item.repo}}</div> <hr>
-          <div>created:{{item.created}}</div> <hr>
-          <div>size:{{item.size}}</div> <hr>
-          <div>sha1:{{item.sha1}}</a></div> <hr>
-          <div>sha256:{{item.sha256}}</div> <hr>
+          <div>name:{{item.name}}</div>
+          <div>version:{{item.version}}</div>
+          <div>package:{{item.package}}</div>
+          <div>repo:{{item.repo}}</div>
+          <div>created:{{item.created}}</div>
+          <div>size:{{item.size}}</div>
+          <div>sha1:{{item.sha1}}</a></div>
+          <div>sha256:{{item.sha256}}</div>
         </paper-material>
     </template>
 
@@ -149,7 +162,6 @@
             }
         }
       }
-
 
     });
   </script>
