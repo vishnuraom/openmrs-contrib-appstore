@@ -1,168 +1,189 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../../bower_components/paper-material/paper-material.html">
-<link rel="import" href="../../bower_components/font-roboto/roboto.html">
-<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
-
 <dom-module id="appstore-details">
-  <template>
-    <style>
-      :host {
-        display: none;
-      }
-
-      :host([active]){
-        display: block;
-      }
-
-      .heading{
-        font-size: 60px;
-        font-family: 'Roboto', 'Noto', sans-serif;
-        font-weight: 100;
-        padding: 8px;
-        position: relative;
-        margin-top: 8px;
-        background-color: #ffffff;
-        height: 140px;
-      }
-
-      .heading paper-fab{
-        position: absolute;
-        bottom: -16px;
-        right: 20px;
-        --paper-fab-background: var(--paper-light-blue-500);
-        --paper-fab-keyboard-focus-background: var(--paper-light-blue-900);
-      }
-
-      .heading span{
-        padding: 8px;
-        font-size: 30px;
-      }
-
-      .details {
-        font-family: "Roboto";
-        font-weight: 300;
-        width: auto;
-        background-color: #ffffff;
-        font-size: 20px;
-        margin-top:30px;
-      }
-
-      .details div{
-        padding: 10px;
-        font-weight: 300;
-        font-size:22px;
-      }
-
-      #overview{
-        padding: 8px;
-        font-size: 30px;
-      }
-
-      paper-material div a {
-        font-weight: 600;
-        text-decoration: none;
-        color: #000000;
-      }
-    }
-
-    </style>
-
-    <app-route
-        route="{{route}}"
-        pattern="/version/:versionDetails"
-        data="{{versionData}}"
-        active="{{versionActive}}"></app-route>
-
-    <iron-ajax
-        auto
-        url="http://localhost:3000/details"
-        params='{{_getParams(category,package)}}'
-        handle-as="json"
-        last-response="{{ajaxResponse}}"></iron-ajax>
-
-    <iron-ajax
-        auto
-        url="http://localhost:3000/packagefiles"
-        params='{{_getParams(category,package)}}'
-        handle-as="json"
-        last-response="{{packageVersions}}"></iron-ajax>
-
-    <paper-material class="heading" elevation="5" animated>
-        <div>{{package}}</div>
-        <span>by {{ajaxResponse.owner}}</span>
-        <a href="https://bintray.com/vishnuraom/{{category}}/download_file?file_path={{_getPath(ajaxResponse.latest_version,packageVersions)}}" download tabindex="-1">
-        <paper-fab icon="file-download" title="download">Download</paper-fab>
-        </a>
-    </paper-material>
-
-    <paper-material class="details" elevation="5" animated>
-       <div id="overview">Overview</div>
-       <div>Repo: {{ajaxResponse.repo}}</div>
-       <div>Owner: {{ajaxResponse.owner}}</div>
-       <div>Description: {{ajaxResponse.desc}}</div>
-       <div>Labels: {{ajaxResponse.labels}}</div>
-       <div>Attribute_names: {{ajaxResponse.attribute_names}}</div>
-       <div>Licenses: {{ajaxResponse.licenses}}</div>
-       <div>Created: {{ajaxResponse.created}}</div>
-       <div>Last updated: {{ajaxResponse.updated}}</div>
-       <div>Website: <a href="{{ajaxResponse.website_url}}" target="_blank">{{ajaxResponse.website_url}}</a></div>
-       <div>Issue Tracker: <a href="{{ajaxResponse.issue_tracker_url}}" target="_blank"> {{ajaxResponse.issue_tracker_url}}</a></div>
-       <div>Github repo: <a href="{{ajaxResponse.github_repo}}" target="_blank">{{ajaxResponse.github_repo}}</a></div>
-       <div>Linked to repos: {{ajaxResponse.linked_to_repos}}</div>
-       <div>Latest Version: {{ajaxResponse.latest_version}}</div>
-       <div>rating_count:{{ajaxResponse.rating_count}}</div>
-       <div>vcs_url: <a href="{{ajaxResponse.vcs_url}}" target="_blank">{{ajaxResponse.vcs_url}}</a></div>
-       <div>maturity:{{ajaxResponse.maturity}}</div>
-    </paper-material>
-
-    <paper-material class="heading" elevation="5" animated>
-        <div>Available Versions of {{package}}</div>
-    </paper-material>
-
-    <template is="dom-repeat" items="[[packageVersions]]">
-        <paper-material class="details" elevation="5" animated>
-          <div>name:{{item.name}}</div>
-          <div>version:{{item.version}}</div>
-          <div>package:{{item.package}}</div>
-          <div>repo:{{item.repo}}</div>
-          <div>created:{{item.created}}</div>
-          <div>size:{{item.size}}</div>
-          <div>sha1:{{item.sha1}}</a></div>
-          <div>sha256:{{item.sha256}}</div>
-        </paper-material>
-    </template>
-
-  </template>
-  <script>
-    Polymer({
-      is: 'appstore-details',
-
-      properties: {
-
-        active: {
-          type: Boolean,
-          value: false,
-          reflectToAttribute: true
-        }
-
-      },
-
-      _getParams:function(category,package) {
-        return {name:package,repo:category};
-      },
-
-      _getPath:function(latestversion,versions) {
-        for(var i=0;i<versions.length;i++){
-            var obj = versions[i];
-            if (latestversion == obj.version) {
-              return obj.path;
-              break;
+    <template>
+        <style>
+            :host {
+                display: none;
             }
-        }
-      }
 
-    });
-  </script>
+            :host([active]) {
+                display: block;
+            }
+
+            .heading {
+                font-size: 60px;
+                font-family: 'Roboto', 'Noto', sans-serif;
+                font-weight: 100;
+                padding: 8px;
+                position: relative;
+                margin-top: 8px;
+                background-color: #ffffff;
+                height: 140px;
+            }
+
+            .heading paper-fab {
+                position: absolute;
+                bottom: -16px;
+                right: 20px;
+                --paper-fab-background: var(--paper-light-blue-500);
+                --paper-fab-keyboard-focus-background: var(--paper-light-blue-900);
+            }
+
+            .heading span {
+                padding: 8px;
+                font-size: 30px;
+            }
+
+            .details {
+                font-family: "Roboto";
+                font-weight: 300;
+                width: auto;
+                background-color: #ffffff;
+                font-size: 20px;
+                margin-top: 30px;
+            }
+
+            .details div {
+                padding: 10px;
+                font-weight: 300;
+                font-size: 22px;
+            }
+
+            #overview {
+                padding: 8px;
+                font-size: 30px;
+            }
+
+            paper-material div a {
+                font-weight: 600;
+                text-decoration: none;
+                color: #000000;
+            }
+
+            iron-list {
+                margin-top: 90px;
+            }
+
+            .versionContent {
+                @apply(--layout);
+                background-color: #ddd;
+                position: relative;
+                width: 380px;
+                height: 300px;
+                margin: 20px;
+            }
+
+            .versionContent> paper-material {
+                @apply(--layout-flex);
+            }
+
+            .box #download {
+                position: absolute;
+                bottom: -16px;
+                right: 25px;
+                z-index: 2;
+            }
+
+            .box #version {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 1;
+            }
+
+            .box div {
+                font-family: 'Roboto', 'Noto', sans-serif;
+                font-weight: 300;
+                font-size: 32px;
+                padding: 16px;
+            }
+        </style>
+
+        <iron-ajax auto url="http://localhost:3000/details" params='{{_getParams(category,package)}}' handle-as="json" last-response="{{ajaxResponse}}"></iron-ajax>
+
+        <iron-ajax auto url="http://localhost:3000/packagefiles" params='{{_getParams(category,package)}}' handle-as="json" last-response="{{packageVersions}}"></iron-ajax>
+
+        <paper-material class="heading" elevation="5" animated>
+            <div>{{package}}</div>
+            <span>by {{ajaxResponse.owner}}</span>
+            <a href="https://bintray.com/vishnuraom/{{category}}/download_file?file_path={{_getPath(ajaxResponse.latest_version,packageVersions)}}" download tabindex="-1">
+                <paper-fab icon="file-download" title="download">Download</paper-fab>
+            </a>
+        </paper-material>
+
+        <paper-material class="details" elevation="5" animated>
+            <div id="overview">Overview</div>
+            <div>Repo: {{ajaxResponse.repo}}</div>
+            <div>Owner: {{ajaxResponse.owner}}</div>
+            <div>Description: {{ajaxResponse.desc}}</div>
+            <div>Labels: {{ajaxResponse.labels}}</div>
+            <div>Attribute_names: {{ajaxResponse.attribute_names}}</div>
+            <div>Licenses: {{ajaxResponse.licenses}}</div>
+            <div>Created: {{ajaxResponse.created}}</div>
+            <div>Last updated: {{ajaxResponse.updated}}</div>
+            <div>Website: <a href="{{ajaxResponse.website_url}}" target="_blank">{{ajaxResponse.website_url}}</a></div>
+            <div>Issue Tracker: <a href="{{ajaxResponse.issue_tracker_url}}" target="_blank"> {{ajaxResponse.issue_tracker_url}}</a></div>
+            <div>Github repo: <a href="{{ajaxResponse.github_repo}}" target="_blank">{{ajaxResponse.github_repo}}</a></div>
+            <div>Linked to repos: {{ajaxResponse.linked_to_repos}}</div>
+            <div>Latest Version: {{ajaxResponse.latest_version}}</div>
+            <div>rating_count:{{ajaxResponse.rating_count}}</div>
+            <div>vcs_url: <a href="{{ajaxResponse.vcs_url}}" target="_blank">{{ajaxResponse.vcs_url}}</a></div>
+            <div>maturity:{{ajaxResponse.maturity}}</div>
+        </paper-material>
+
+        <paper-material class="heading" elevation="5" animated>
+            <div>Available Versions of {{package}}</div>
+        </paper-material>
+
+        <iron-list items="[[packageVersions]]" grid>
+            <template>
+                <div class="versionContainer">
+                    <div class="versionContent" tabindex$="[[tabIndex]]">
+                        <paper-material elevation="5" animated class="box">
+                            <a id="version" href="#/[[category]]/details/[[package]]/version/{{item.version}}"></a>
+                            <div>[[item.version]]</div>
+                            <a id="download" href="https://bintray.com/vishnuraom/{{category}}/download_file?file_path={{item.path}}" download tabindex="-1">
+                                <paper-fab icon="file-download" title="download">Download</paper-fab>
+                            </a>
+                        </paper-material>
+                    </div>
+                </div>
+            </template>
+        </iron-list>
+
+    </template>
+    <script>
+        Polymer({
+            is: 'appstore-details',
+
+            properties: {
+
+                active: {
+                    type: Boolean,
+                    value: false,
+                    reflectToAttribute: true
+                }
+
+            },
+
+            _getParams: function(category, package) {
+                return {
+                    name: package,
+                    repo: category
+                };
+            },
+
+            _getPath: function(latestversion, versions) {
+                for (var i = 0; i < versions.length; i++) {
+                    var obj = versions[i];
+                    if (latestversion == obj.version) {
+                        return obj.path;
+                        break;
+                    }
+                }
+            }
+
+        });
+    </script>
 </dom-module>

@@ -1,137 +1,115 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/app-layout/app-scroll-effects/effects/waterfall.html">
-<link rel="import" href="../../bower_components/app-layout/app-header-layout/app-header-layout.html">
-<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
-<link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
-<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../../bower_components/app-route/app-location.html">
-<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
-<link rel="import" href="../../bower_components/app-route/app-route.html">
-<link rel="import" href="appstore-cards.html">
-<link rel="import" href="appstore-home.html">
-
 <dom-module id="appstore-header">
+    <template>
+        <style>
+            app-toolbar {
+                background-color: #87cefa;
+            }
 
-  <template>
+            .main-header {
+                box-shadow: 3px 9px 5px 0px #848484;
+            }
 
-    <style>
-      app-toolbar {
-        background-color: #87cefa;
-      }
+            .main-header app-toolbar div {
+                font-size: 30px;
+                font-family: Roboto;
+            }
 
-      .main-header {
-        box-shadow: 3px 9px 5px 0px #848484;
-      }
+            paper-tabs {
+                --paper-tabs-selection-bar-color: #000000;
+                color: #31f0ef;
+                font-size: 17px;
+                width: 700px;
+                cursor: pointer;
+                font-style: bold;
+            }
 
-      .main-header app-toolbar div {
-        font-size: 30px;
-        font-family: Roboto;
-      }
+            paper-tab {
+                @apply(--layout-flex-none);
+                --paper-tab-ink: #31f0ef;
+            }
 
-      paper-tabs {
-        --paper-tabs-selection-bar-color: #000000;
-        color: #31f0ef;
-        font-size: 17px;
-        width: 700px;
-        cursor: pointer;
-        font-style: bold;
-      }
+            paper-tab a {
+                //rules defined in iron-flex-layout.html
+                @apply(--layout-horizontal);
+                @apply(--layout-center-center);
+                text-decoration: none;
+                color: #000000;
+                padding: 0 20px;
+                font-weight: 300;
+                height: auto;
+            }
 
-      paper-tab {
-        @apply(--layout-flex-none);
-        --paper-tab-ink: #31f0ef;
-      }
+            .spacer {
+                @apply(--layout);
+                @apply(--layout-flex-auto);
+                @apply(--layout-center-center);
+            }
 
-      paper-tab a {
-        //rules defined in iron-flex-layout.html
-        @apply(--layout-horizontal);
-        @apply(--layout-center-center);
-        text-decoration: none;
-        color: #000000;
-        padding: 0 20px;
-        font-weight: 300;
-        height: auto;
-      }
+            .logo {
+                background-image: url(http://res.cloudinary.com/dx1h6ttme/image/upload/c_scale,w_65/v1466247554/860776_quwwuj.png);
+                width: 60px;
+                height: 60px;
+                background-size: 100% 100%;
+            }
+        </style>
+        <app-location route="{{route}}" use-hash-as-path></app-location>
+        <app-route route="{{route}}" pattern="/:category" data="{{categoryData}}" tail="{{subRoute}}"></app-route>
+        <app-route route="{{route}}" pattern="/home" active="{{homeActive}}"></app-route>
+        <app-route route="{{subRoute}}" pattern="/packages" active="{{packagesActive}}"></app-route>
+        <app-route route="{{subRoute}}" pattern="/details/:packageDetails" data="{{packageData}}" active="{{detailsActive}}"></app-route>
 
-      .spacer {
-        @apply(--layout);
-        @apply(--layout-flex-auto);
-        @apply(--layout-center-center);
-      }
+        <app-header-layout>
+            <app-header class="main-header" fixed condenses reveals effects="waterfall">
+                <app-toolbar>
+                    <div class="spacer">
+                        <div class="logo"></div>
+                        <div>OpenMRS App Store</div>
+                    </div>
+                </app-toolbar>
+                <app-toolbar>
+                    <paper-tabs selected="[[categoryData.category]]" attr-for-selected="name">
+                        <paper-tab name="home" link>
+                            <a href="#/home" tabindex="-1">Home</a>
+                        </paper-tab>
+                        <paper-tab name="omod" link>
+                            <a href="#/omod/packages" tabindex="-1">OMOD</a>
+                        </paper-tab>
+                        <paper-tab name="owa" link>
+                            <a href="#/owa/packages" tabindex="-1">OWA</a>
+                        </paper-tab>
+                    </paper-tabs>
+                </app-toolbar>
+            </app-header>
 
-      .logo {
-        background-image: url(http://res.cloudinary.com/dx1h6ttme/image/upload/c_scale,w_65/v1466247554/860776_quwwuj.png);
-        width: 60px;
-        height: 60px;
-        background-size: 100% 100%;
-      }
+            <appstore-home active="{{homeActive}}"></appstore-home>
+            <appstore-packages category="{{categoryData.category}}" active="{{packagesActive}}"></appstore-packages>
+            <appstore-details category="{{categoryData.category}}" package="{{packageData.packageDetails}}" active="{{detailsActive}}"></appstore-details>
 
-    </style>
-    <app-location route="{{route}}" use-hash-as-path></app-location>
-    <app-route route="{{route}}" pattern="/:category" data="{{categoryData}}" tail="{{subRoute}}"></app-route>
-    <app-route route="{{route}}" pattern="/home" active="{{homeActive}}" ></app-route>
+        </app-header-layout>
+    </template>
 
-    <app-header-layout>
-      <app-header class="main-header" fixed condenses reveals effects="waterfall">
-        <app-toolbar>
-          <div class="spacer">
-               <div class="logo"></div>
-               <div>OpenMRS App Store</div>
-          </div>
-        </app-toolbar>
-        <app-toolbar>
-          <paper-tabs selected="[[categoryData.category]]" attr-for-selected="name">
-            <paper-tab name="home" link>
-              <a href="#/home" tabindex="-1">Home</a>
-            </paper-tab>
-            <paper-tab name="omod" link>
-              <a href="#/omod/packages" tabindex="-1">OMOD</a>
-            </paper-tab>
-            <paper-tab name="owa"link>
-              <a href="#/owa/packages" tabindex="-1">OWA</a>
-            </paper-tab>
-            <paper-tab name="docker" link>
-              <a href="#/docker/packages" tabindex="-1">Docker</a>
-            </paper-tab>
-            <paper-tab name="stats" link>
-              <a href="#/stats" tabindex="-1">Stats</a>
-            </paper-tab>
-          </paper-tabs>
-        </app-toolbar>
-      </app-header>
+    <script>
+        Polymer({
 
-      <appstore-cards category="{{categoryData.category}}" route="{{subRoute}}"></appstore-cards>
-      <appstore-home active="{{homeActive}}"></appstore-home>
-    </app-header-layout>
-  </template>
+            is: 'appstore-header',
 
-  <script>
-    Polymer({
+            properties: {
 
-      is: 'appstore-header',
+                route: Object,
 
-      properties: {
+                subRoute: Object,
 
-        route: Object,
+                categoryData: Object,
 
-        subRoute: Object,
+                packageData: Object,
 
-        categoryData: Object,
+            },
 
-        packageData: Object,
-
-      },
-
-      attached: function() {
-        if (!this.route.path) {
-          this.set('route.path', '/omod/packages');
-        }
-      }
-
-    });
-  </script>
-
+            attached: function() {
+                if (!this.route.path) {
+                    this.set('route.path', '/omod/packages');
+                }
+            }
+        });
+    </script>
 </dom-module>

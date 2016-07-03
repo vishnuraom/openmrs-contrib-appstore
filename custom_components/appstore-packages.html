@@ -1,128 +1,135 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../../bower_components/paper-card/paper-card.html">
-<link rel="import" href="../../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../../bower_components/iron-list/iron-list.html">
-
 <dom-module id="appstore-packages">
-  <template>
-    <style>
-      :host {
-        display: none;
-      }
+    <template>
+        <style>
+            :host {
+                display: none;
+            }
 
-      :host([active]){
-        display: block;
-      }
+            :host([active]) {
+                display: block;
+            }
 
-      iron-list {
-        margin-top: 90px;
-        padding-bottom: 16px;
-      }
+            iron-list {
+                margin-top: 90px;
+                padding-bottom: 16px;
+            }
 
-      .packageContent {
-        @apply(--layout);
-        background-color: #ddd;
-        position: relative;
-        width: 380px;
-        height: 300px;
-        margin: 20px;
-      }
+            .packageContent {
+                @apply(--layout);
+                background-color: #ddd;
+                position: relative;
+                width: 380px;
+                height: 300px;
+                margin: 20px;
+            }
 
-      .packageContent > paper-material {
-        @apply(--layout-flex);
-      }
+            .packageContent> paper-material {
+                @apply(--layout-flex);
+            }
 
-      #info {
-        font-family: 'Roboto', 'Noto', sans-serif;
-        position: relative;
-        width: auto;
-        padding: 10px;
-        margin-top:40px;
-      }
+            #info {
+                font-family: 'Roboto', 'Noto', sans-serif;
+                position: relative;
+                width: auto;
+                padding: 10px;
+                margin-top: 40px;
+            }
 
-      #info span{
-        font-weight: 100;
-        font-size: 80px;
-      }
+            #info span {
+                font-weight: 100;
+                font-size: 80px;
+            }
 
-      #info div{
-        padding: 10px;
-        font-weight: 300;
-        font-size: 22px;
-      }
+            #info div {
+                padding: 10px;
+                font-weight: 300;
+                font-size: 22px;
+            }
 
-      #rect a{
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 1;
-      }
+            .box a {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 1;
+            }
 
-      #rect div{
-        font-family: 'Roboto', 'Noto', sans-serif;
-        font-weight: 300;
-        font-size: 32px;
-        padding: 16px;
-      }
+            .box head {
+                font-family: 'Roboto', 'Noto', sans-serif;
+                font-weight: 300;
+                font-size: 32px;
+                padding: 16px;
+            }
 
-    </style>
+            .box rating{
 
-    <iron-ajax
-    auto
-    url="http://localhost:3000/repositories"
-    params='{{_getParams(category)}}'
-    handle-as="json"
-    last-response="{{repoInfo}}"></iron-ajax>
+            }
 
-    <paper-material id="info"elevation="5" animated>
-       <span>{{repoInfo.name}}.</span>
-       <div>{{repoInfo.desc}}</div>
-       <div>Created On: {{repoInfo.created}}</div>
-       <div>Packages Available: {{repoInfo.package_count}}</div>
-    </paper-material>
+            .box owner{
 
-    <iron-ajax
-    auto
-    url="http://localhost:3000/packages"
-    params='{{_getParams(category)}}'
-    handle-as="json"
-    last-response="{{ajaxResponse}}"></iron-ajax>
+            }
 
-    <iron-list items="[[ajaxResponse]]" grid>
-      <template>
-        <div class="packageContainer">
-          <div class="packageContent" tabindex$="[[tabIndex]]">
-              <paper-material elevation="5" animated id="rect">
-                  <a href="#/[[category]]/details/[[item.name]]"></a>
-                  <div>[[item.name]]</div>
-              </paper-material>
-          </div>
-        </div>
-      </template>
-    </iron-list>
+            .box desc{
+              font-weight: 500;
+              font-size: 22px;
+              padding: 16px;
+            }
+        </style>
 
-  </template>
-  <script>
+        <iron-ajax auto="true" url="[[_computePackagesURL(category)]]" handle-as="json" last-response="{{ajaxResponse}}"></iron-ajax>
+        <iron-ajax auto="true" url="[[_computeRepoURL(category)]]" handle-as="json" last-response="{{repoInfo}}"></iron-ajax>
 
-    Polymer({
-      is: 'appstore-packages',
+        <paper-material id="info" elevation="5" animated>
+            <span>{{repoInfo.name}}.</span>
+            <div>{{repoInfo.desc}}</div>
+            <div>Created On: {{repoInfo.created}}</div>
+            <div>Packages Available: {{repoInfo.package_count}}</div>
+        </paper-material>
 
-      properties: {
+        <iron-list items="[[ajaxResponse]]" grid>
+            <template>
+                <div class="packageContainer">
+                    <div class="packageContent" tabindex$="[[tabIndex]]">
+                        <paper-material elevation="5" animated class="box">
+                            <a href="#/[[category]]/details/[[item.name]]"></a>
+                            <div id="head">[[item.name]]</div>
+                            <iron-ajax auto url="[[_computeDetailsURL(category,item.name)]]" handle-as="json" last-response="{{detailsResponse}}"></iron-ajax>
+                            <div id="owner">[[detailsResponse.owner]]</div>
+                            <div id="rating">[[detailsResponse.rating_count]]</div>
+                            <div id="desc">[[detailsResponse.desc]]</div>
+                        </paper-material>
+                    </div>
+                </div>
+            </template>
+        </iron-list>
 
-        active: {
-          type: Boolean,
-          value: false,
-          reflectToAttribute: true
-        }
+    </template>
+    <script>
+        Polymer({
+            is: 'appstore-packages',
 
-      },
+            properties: {
 
-      _getParams:function(category) {
-        return {repo:category};
-      }
-    });
-  </script>
+                active: {
+                    type: Boolean,
+                    value: false,
+                    reflectToAttribute: true
+                }
+
+            },
+
+            _computeRepoURL(category){
+              return 'http://localhost:3000/repositories?repo='+category;
+            },
+
+            _computePackagesURL(category){
+              return 'http://localhost:3000/packages?repo='+category;
+            },
+
+            _computeDetailsURL(category,package){
+              return 'http://localhost:3000/details?repo='+category+'&name='+package;
+            }
+        });
+    </script>
 </dom-module>
