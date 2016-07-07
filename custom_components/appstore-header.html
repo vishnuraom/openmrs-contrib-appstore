@@ -53,10 +53,9 @@
             }
         </style>
         <app-location route="{{route}}" use-hash-as-path></app-location>
-        <app-route route="{{route}}" pattern="/:category" data="{{categoryData}}" tail="{{subRoute}}"></app-route>
         <app-route route="{{route}}" pattern="/home" active="{{homeActive}}"></app-route>
-        <app-route route="{{subRoute}}" pattern="/packages" active="{{packagesActive}}"></app-route>
-        <app-route route="{{subRoute}}" pattern="/details/:packageDetails" data="{{packageData}}" active="{{detailsActive}}"></app-route>
+        <app-route route="{{route}}" pattern="/packages/:category" data="{{categoryData}}" active="{{packagesActive}}"></app-route>
+        <app-route route="{{route}}" pattern="/details/:category/:packageDetails" data="{{packageData}}" active="{{detailsActive}}"></app-route>
 
         <app-header-layout>
             <app-header class="main-header" fixed condenses reveals effects="waterfall">
@@ -72,10 +71,10 @@
                             <a href="#/home" tabindex="-1">Home</a>
                         </paper-tab>
                         <paper-tab name="omod" link>
-                            <a href="#/omod/packages" tabindex="-1">OMOD</a>
+                            <a href="#/packages/omod" tabindex="-1">OMOD</a>
                         </paper-tab>
                         <paper-tab name="owa" link>
-                            <a href="#/owa/packages" tabindex="-1">OWA</a>
+                            <a href="#/packages/owa" tabindex="-1">OWA</a>
                         </paper-tab>
                     </paper-tabs>
                 </app-toolbar>
@@ -83,7 +82,7 @@
 
             <appstore-home active="{{homeActive}}"></appstore-home>
             <appstore-packages category="{{categoryData.category}}" active="{{packagesActive}}"></appstore-packages>
-            <appstore-details category="{{categoryData.category}}" package="{{packageData.packageDetails}}" active="{{detailsActive}}"></appstore-details>
+            <appstore-details category="{{packageData.category}}" package="{{packageData.packageDetails}}" active="{{detailsActive}}"></appstore-details>
 
         </app-header-layout>
     </template>
@@ -107,7 +106,7 @@
 
             attached: function() {
                 if (!this.route.path) {
-                    this.set('route.path', '/omod/packages');
+                    this.set('route.path', '/packages/omod');
                 }
             }
         });

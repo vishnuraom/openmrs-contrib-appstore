@@ -1,3 +1,4 @@
+<link rel="import" href="../bower_components/star-rating/star-rating.html">
 <dom-module id="appstore-packages">
     <template>
         <style>
@@ -92,12 +93,10 @@
                 <div class="packageContainer">
                     <div class="packageContent" tabindex$="[[tabIndex]]">
                         <paper-material elevation="5" animated class="box">
-                            <a href="#/[[category]]/details/[[item.name]]"></a>
+                            <a href="#/details/[[category]]/[[item.name]]"></a>
                             <div id="head">[[item.name]]</div>
-                            <iron-ajax auto="true" url="[[_computeDetailsURL(category,item.name)]]" handle-as="json" on-response="{{detailsResponse}}"></iron-ajax>
+                            <iron-ajax auto="true" url="[[_computeDetailsURL(category,item.name)]]" handle-as="json" last-response="detailsResponse" debounce-duration="300"></iron-ajax>
                             <div id="owner">[[detailsResponse.owner]]</div>
-                            <div id="rating">[[detailsResponse.rating_count]]</div>
-                            <div id="desc">[[detailsResponse.desc]]</div>
                         </paper-material>
                     </div>
                 </div>
