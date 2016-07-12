@@ -11,40 +11,48 @@
             }
 
             iron-list {
-                margin-top: 90px;
-                padding-bottom: 16px;
+                margin-top: 40px;
             }
 
             .packageContent {
                 @apply(--layout);
-                background-color: #ddd;
+                background-color: #fff;
                 position: relative;
-                width: 380px;
-                height: 300px;
+                width: 350px;
+                height: 270px;
                 margin: 20px;
             }
 
-            .packageContent> paper-material {
+            .packageContent> paper-card {
                 @apply(--layout-flex);
             }
 
-            #info {
+            #heading {
+                background-color: #fff;
                 font-family: 'Roboto', 'Noto', sans-serif;
-                position: relative;
                 width: auto;
                 padding: 10px;
                 margin-top: 40px;
             }
 
-            #info span {
+            paper-card:hover {
+                @apply(--shadow-elevation-8dp);
+            }
+
+            #heading span {
                 font-weight: 100;
                 font-size: 80px;
             }
 
-            #info div {
+            #heading div {
                 padding: 10px;
                 font-weight: 300;
                 font-size: 22px;
+            }
+
+            .box {
+                font-family: 'Roboto', 'Noto', sans-serif;
+                padding: 12px;
             }
 
             .box a {
@@ -56,48 +64,61 @@
                 z-index: 1;
             }
 
-            .box head {
-                font-family: 'Roboto', 'Noto', sans-serif;
+            #head {
+                font-size: 24px;
+                font-weight: 400;
+                color: #000;
+            }
+
+            #owner {
+                font-weight: 100;
+                font-size: 16px;
+            }
+
+            #desc {
                 font-weight: 300;
-                font-size: 32px;
-                padding: 16px;
+                font-size: 18px;
             }
 
-            .box rating {}
-
-            .box owner {}
-
-            .box desc {
-                font-weight: 500;
-                font-size: 22px;
-                padding: 16px;
+            /*custom-wrapper {
+                left: -150px;
             }
+
+            .custom-class .star-rating-wrapper> span {
+                padding: 2px;
+                font-size: 2em;
+                color: gold;
+            }*/
+
         </style>
 
-        <iron-ajax auto="true" url="[[_computePackagesURL(category)]]" handle-as="json" last-response="{{ajaxResponse}}"></iron-ajax>
+        <iron-ajax auto="true" url="[[_computeDetailsURL(category)]]" handle-as="json" last-response="{{ajaxResponse}}"></iron-ajax>
         <iron-ajax auto="true" url="[[_computeRepoURL(category)]]" handle-as="json" last-response="{{repoInfo}}"></iron-ajax>
 
         <platinum-sw-register skip-waiting clients-claim auto-register reload-on-install auto-register>
             <platinum-sw-cache default-cache-strategy="fastest"></platinum-sw-cache>
         </platinum-sw-register>
 
-        <paper-material id="info" elevation="5" animated>
+        <paper-card animated-shadow id="heading">
             <span>{{repoInfo.name}}.</span>
             <div>{{repoInfo.desc}}</div>
             <div>Created On: {{repoInfo.created}}</div>
             <div>Packages Available: {{repoInfo.package_count}}</div>
-        </paper-material>
+        </paper-card>
 
         <iron-list items="[[ajaxResponse]]" grid>
             <template>
                 <div class="packageContainer">
                     <div class="packageContent" tabindex$="[[tabIndex]]">
-                        <paper-material elevation="5" animated class="box">
-                            <a href="#/details/[[category]]/[[item.name]]"></a>
+                        <paper-card animated-shadow class="box">
                             <div id="head">[[item.name]]</div>
-                            <iron-ajax auto="true" url="[[_computeDetailsURL(category,item.name)]]" handle-as="json" last-response="detailsResponse" debounce-duration="300"></iron-ajax>
-                            <div id="owner">[[detailsResponse.owner]]</div>
-                        </paper-material>
+                            <a href="#/details/[[category]]/[[item.name]]"></a>
+                            <div id="owner">by [[item.owner]]</div>
+                            <div id="custom-wrapper">
+                                <star-rating stars="5" rate="[[item.rating]]" class="custom-class"></star-rating>
+                            </div>
+                            <div id="desc">[[_filterContent(item.desc)]]...</div>
+                        </paper-card>
                     </div>
                 </div>
             </template>
@@ -122,12 +143,12 @@
                 return 'http://localhost:3000/repositories?repo=' + category;
             },
 
-            _computePackagesURL(category) {
-                return 'http://localhost:3000/packages?repo=' + category;
+            _computeDetailsURL(category, package) {
+                return 'http://localhost:3000/alldetails?repo=' + category;
             },
 
-            _computeDetailsURL(category, package) {
-                return 'http://localhost:3000/details?repo=' + category + '&name=' + package;
+            _filterContent(str) {
+                return str.substr(0, 160);
             }
         });
     </script>
