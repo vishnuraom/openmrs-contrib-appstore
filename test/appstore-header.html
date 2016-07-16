@@ -1,0 +1,53 @@
+<html>
+
+<head>
+    <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../bower_components/web-component-tester/browser.js"></script>
+    <link rel="import" href="../appstore-header.html">
+</head>
+
+<body>
+
+    <test-fixture id="appstore-header-fixture">
+        <template>
+            <appstore-header></appstore-header>
+        </template>
+    </test-fixture>
+
+    <script>
+        function setLocation(url) {
+            window.history.pushState({}, '', url);
+            Polymer.Base.fire('location-changed', {}, {
+                node: window
+            });
+        }
+
+        suite('<appstore-header>', function() {
+            var originalLocation;
+            var appheader;
+
+            setup(function() {
+                originalLocation = window.location.href;
+                appheader = fixture('appstore-header-fixture');
+            });
+
+            teardown(function() {
+                window.history.replaceState({}, '', originalLocation);
+            });
+
+            test('runs through basic usage', function() {
+                // Navigate to /lol
+                setLocation('/home');
+
+                expect(appheader.data).to.be.deep.eq({
+                    page: 'home'
+                });
+
+            });
+
+        });
+    </script>
+
+</body>
+
+</html>

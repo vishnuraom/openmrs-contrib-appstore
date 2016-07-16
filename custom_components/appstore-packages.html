@@ -79,7 +79,6 @@
                 font-weight: 300;
                 font-size: 18px;
             }
-
             /*custom-wrapper {
                 left: -150px;
             }
@@ -89,7 +88,6 @@
                 font-size: 2em;
                 color: gold;
             }*/
-
         </style>
 
         <iron-ajax auto="true" url="[[_computeDetailsURL(category)]]" handle-as="json" last-response="{{ajaxResponse}}"></iron-ajax>
@@ -135,7 +133,11 @@
                     type: Boolean,
                     value: false,
                     reflectToAttribute: true
-                }
+                },
+
+                packageData: Object,
+
+                repoInfo: Object,
 
             },
 

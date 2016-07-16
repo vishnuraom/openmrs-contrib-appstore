@@ -1,0 +1,30 @@
+<html>
+
+<head>
+    <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../bower_components/web-component-tester/browser.js"></script>
+    <link rel="import" href="../appstore-packages.html">
+</head>
+
+<body>
+
+    <test-fixture id="appstore-packages-fixture">
+        <template>
+            <appstore-packages></appstore-packages>
+        </template>
+    </test-fixture>
+
+    <script>
+        suite('<appstore-packages>', function() {
+            var app-packages;
+
+            setup(function() {
+                app-packages = fixture('appstore-packages-fixture');
+            });
+
+        });
+    </script>
+
+</body>
+
+</html>
