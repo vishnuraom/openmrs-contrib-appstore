@@ -1,0 +1,47 @@
+<dom-module id="appstore-footer">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+
+            footer {
+                background-color: #424242;
+                font-size: 18px;
+                font-weight: 100;
+                font-family: 'Roboto', 'Helvetica', sans-serif;
+                height: auto;
+                margin-top: 50px;
+            }
+
+            #content{
+              padding-top: 50px;
+            }
+
+            #content p {
+                color: #FFFFFF;
+                max-width: 800px;
+                margin: 0 auto;
+            }
+
+            #content a {
+                color: #9E8F7E;
+                text-decoration: none;
+            }
+        </style>
+        <footer>
+            <div id="content">
+                <p>Copyright © 2004-2016 OpenMRS Inc. By using this site, you agree to the <a href="http://openmrs.org/privacy" target="_blank">OpenMRS Privacy Policy</a>.
+                    <br> Text is available under the <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons 4.0 International Attribution License (CC BY 4.0)</a>.
+                    <br>Software is available under the <a href="http://openmrs.org/license" target="_blank">Mozilla Public
+                    License 2.0 with Healthcare Disclaimer (MPL 2.0 HD)</a>.
+                    <br> "OpenMRS" is a registered trademark and the OpenMRS graphic logo is a trademark of OpenMRS Inc.</p>
+            </div>
+        </footer>
+    </template>
+    <script>
+        Polymer({
+            is: 'appstore-footer',
+        });
+    </script>
+</dom-module>

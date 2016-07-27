@@ -1,4 +1,3 @@
-<link rel="import" href="../bower_components/star-rating/star-rating.html">
 <dom-module id="appstore-packages">
     <template>
         <style>
@@ -11,16 +10,16 @@
             }
 
             iron-list {
-                margin-top: 40px;
+                margin-top: 20px;
             }
 
             .packageContent {
                 @apply(--layout);
                 background-color: #fff;
                 position: relative;
-                width: 350px;
+                width: 370px;
                 height: 270px;
-                margin: 20px;
+                margin: 10px;
             }
 
             .packageContent> paper-card {
@@ -32,7 +31,7 @@
                 font-family: 'Roboto', 'Noto', sans-serif;
                 width: auto;
                 padding: 10px;
-                margin-top: 40px;
+                margin-top: 20px;
             }
 
             paper-card:hover {
@@ -79,15 +78,7 @@
                 font-weight: 300;
                 font-size: 18px;
             }
-            /*custom-wrapper {
-                left: -150px;
-            }
 
-            .custom-class .star-rating-wrapper> span {
-                padding: 2px;
-                font-size: 2em;
-                color: gold;
-            }*/
         </style>
 
         <iron-ajax auto="true" url="[[_computeDetailsURL(category)]]" handle-as="json" last-response="{{ajaxResponse}}"></iron-ajax>
@@ -112,8 +103,8 @@
                             <div id="head">[[item.name]]</div>
                             <a href="#/details/[[category]]/[[item.name]]"></a>
                             <div id="owner">by [[item.owner]]</div>
-                            <div id="custom-wrapper">
-                                <star-rating stars="5" rate="[[item.rating]]" class="custom-class"></star-rating>
+                            <div class="gold">
+                                <star-rating  stars="5" rate="[[item.rating]]"></star-rating>
                             </div>
                             <div id="desc">[[_filterContent(item.desc)]]...</div>
                         </paper-card>
@@ -121,7 +112,7 @@
                 </div>
             </template>
         </iron-list>
-
+    <appstore-footer></appstore-footer>
     </template>
     <script>
         Polymer({

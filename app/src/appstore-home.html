@@ -9,14 +9,27 @@
                 display: block;
             }
 
-            paper-material {
+            paper-card:hover {
+                @apply(--shadow-elevation-8dp);
+            }
+
+            #heading {
+                background-color: #fff;
+                font-family: 'Roboto', 'Noto', sans-serif;
+                width: auto;
                 padding: 10px;
                 margin-top: 20px;
-                font-size: 30px;
-                height: auto;
-                width: auto;
+            }
+
+            #heading span {
                 font-weight: 100;
-                font-family: "Roboto";
+                font-size: 80px;
+            }
+
+            #heading div {
+                padding: 10px;
+                font-weight: 300;
+                font-size: 22px;
             }
 
             google-youtube {
@@ -25,13 +38,15 @@
                 left: 15%;
             }
         </style>
-        <paper-material elevation="5" animated>
-            Welcome to OpenMRS App Store,you can find some useful content here for getting started.
-        </paper-material>
+
+        <paper-card animated-shadow id="heading">
+            <span>appstore.</span>
+            <div>Welcome to OpenMRS App Store,you can find some useful content here for getting started.The global OpenMRS community works together to build the world's leading open source enterprise electronic medical record system platform.</div>
+        </paper-card>
 
         <google-youtube video-id="sO9YsVFdscI" height="480px" width="854px" rel="0" start="5" autoplay="0">
         </google-youtube>
-
+        <appstore-footer></appstore-footer>
     </template>
     <script>
         Polymer({
