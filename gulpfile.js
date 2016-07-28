@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var vulcanize = require('gulp-vulcanize');
 var merge = require('merge-stream');
+var webserver = require('gulp-webserver');
 
 gulp.task('copy', function() {
     var bower = gulp.src([
@@ -30,6 +31,13 @@ gulp.task('vulcanize', function() {
             inligneCss: true
         }))
         .pipe(gulp.dest('dist/src'));
+});
+
+gulp.task('serve', function() {
+  gulp.src('app')
+    .pipe(webserver({
+      livereload: true
+    }));
 });
 
 gulp.task('default', ['copy', 'vulcanize']);
