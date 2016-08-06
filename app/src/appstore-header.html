@@ -47,9 +47,9 @@
             }
 
             .logo {
-                background-image: url(http://res.cloudinary.com/dx1h6ttme/image/upload/c_scale,w_65/v1466247554/860776_quwwuj.png);
-                width: 60px;
-                height: 60px;
+                background-image: url(https://res.cloudinary.com/dx1h6ttme/image/upload/c_scale,h_65,q_19,w_392/v1469797731/omrs_xyhfco.png);
+                width: 392px;
+                height: 65px;
                 background-size: 100% 100%;
             }
         </style>
@@ -63,7 +63,6 @@
                 <app-toolbar>
                     <div class="spacer">
                         <div class="logo"></div>
-                        <div>OpenMRS App Store</div>
                     </div>
                 </app-toolbar>
                 <app-toolbar>
@@ -105,10 +104,21 @@
 
             },
 
+            observers: [
+                '_routePageChanged(packageData.packageDetails)'
+            ],
+
             attached: function() {
                 if (!this.route.path) {
                     this.set('route.path', '/packages/omod');
                 }
+            },
+
+            _routePageChanged: function() {
+                Polymer.AppLayout.scroll({
+                    top: 0,
+                    behavior: 'silent'
+                });
             }
         });
     </script>

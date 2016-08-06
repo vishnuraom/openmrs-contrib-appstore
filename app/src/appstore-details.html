@@ -100,9 +100,8 @@
             }
         </style>
 
-        <iron-ajax auto url="http://localhost:3000/details" params='{{_getParams(category,package)}}' handle-as="json" last-response="{{packageDetails}}"></iron-ajax>
-
-        <iron-ajax auto url="http://localhost:3000/packagefiles" params='{{_getParams(category,package)}}' handle-as="json" last-response="{{packageVersions}}"></iron-ajax>
+        <iron-ajax auto="true" url="[[_computeDetailsURL(category,package)]]" handle-as="json" last-response="{{packageDetails}}"></iron-ajax>
+        <iron-ajax auto="true" url="[[_computeFilesURL(category,package)]]" handle-as="json" last-response="{{packageVersions}}"></iron-ajax>
 
         <paper-material class="heading" elevation="5" animated>
             <div>{{package}}</div>
@@ -162,19 +161,15 @@
                     type: Boolean,
                     value: false,
                     reflectToAttribute: true
-                },
-
-                packageDetails: Object,
-
-                packageVersions: Object,
-
+                }
             },
 
-            _getParams: function(category, package) {
-                return {
-                    name: package,
-                    repo: category
-                };
+            _computeDetailsURL: function(category, package) {
+                return "http://localhost:3000/details?repo=" + category + "&name=" + package;
+            },
+
+            _computeFilesURL: function(category, package) {
+                return "http://localhost:3000/packagefiles?repo=" + category + "&name=" + package;
             },
 
             _getPath: function(latestversion, versions) {
