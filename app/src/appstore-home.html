@@ -38,20 +38,26 @@
                 left: 15%;
             }
         </style>
+        <div id="appstoreHome">
+            <paper-card animated-shadow id="heading">
+                <span>openmrs.</span>
+                <div>Welcome to OpenMRS App Store,you can find some useful content here for getting started.The global OpenMRS community works together to build the world's leading open source enterprise electronic medical record system platform.</div>
+            </paper-card>
 
-        <paper-card animated-shadow id="heading">
-            <span>openmrs.</span>
-            <div>Welcome to OpenMRS App Store,you can find some useful content here for getting started.The global OpenMRS community works together to build the world's leading open source enterprise electronic medical record system platform.</div>
-        </paper-card>
-
-        <google-youtube video-id="sO9YsVFdscI" height="480px" width="854px" rel="0" start="5" autoplay="0">
-        </google-youtube>
-        <appstore-footer></appstore-footer>
+            <google-youtube video-id="sO9YsVFdscI" height="480px" width="854px" rel="0" start="5" autoplay="0">
+            </google-youtube>
+            <appstore-footer></appstore-footer>
+        </div>
     </template>
     <script>
         Polymer({
 
             is: 'appstore-home',
+
+            behaviors: [
+                Polymer.NeonAnimatableBehavior,
+                Polymer.NeonAnimationRunnerBehavior
+            ],
 
             properties: {
 
@@ -59,8 +65,34 @@
                     type: Boolean,
                     value: false,
                     reflectToAttribute: true
-                }
+                },
 
+                animationConfig: {
+                    value: function() {
+                        return {
+                            'entry': [{
+                                name: 'fade-in-animation',
+                                node: this,
+                                timing: {
+                                    delay: 400,
+                                    duration: 500
+                                }
+                            }],
+                            'exit': [{
+                                name: 'fade-out-animation',
+                                node: this,
+                                timing: {
+                                    delay: 100,
+                                    duration: 500
+                                }
+                            }],
+                        }
+                    }
+                },
+            },
+
+            ready: function() {
+                this.playAnimation('entry');
             }
         });
     </script>

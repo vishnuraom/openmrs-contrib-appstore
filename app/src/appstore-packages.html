@@ -78,45 +78,51 @@
                 font-weight: 300;
                 font-size: 18px;
             }
-
         </style>
+        <div id="packagesPage">
+            <iron-ajax auto="true" url="[[_computeDetailsURL(category)]]" handle-as="json" last-response="{{ajaxResponse}}"></iron-ajax>
+            <iron-ajax auto="true" url="[[_computeRepoURL(category)]]" handle-as="json" last-response="{{repoInfo}}"></iron-ajax>
 
-        <iron-ajax auto="true" url="[[_computeDetailsURL(category)]]" handle-as="json" last-response="{{ajaxResponse}}"></iron-ajax>
-        <iron-ajax auto="true" url="[[_computeRepoURL(category)]]" handle-as="json" last-response="{{repoInfo}}"></iron-ajax>
+            <platinum-sw-register skip-waiting clients-claim auto-register auto-register>
+                <platinum-sw-cache default-cache-strategy="fastest"></platinum-sw-cache>
+            </platinum-sw-register>
 
-        <platinum-sw-register skip-waiting clients-claim auto-register reload-on-install auto-register>
-            <platinum-sw-cache default-cache-strategy="fastest"></platinum-sw-cache>
-        </platinum-sw-register>
+            <paper-card animated-shadow id="heading">
+                <span>{{repoInfo.name}}.</span>
+                <div>{{repoInfo.desc}}</div>
+                <div>Created On: {{repoInfo.created}}</div>
+                <div>Packages Available: {{repoInfo.package_count}}</div>
+            </paper-card>
 
-        <paper-card animated-shadow id="heading">
-            <span>{{repoInfo.name}}.</span>
-            <div>{{repoInfo.desc}}</div>
-            <div>Created On: {{repoInfo.created}}</div>
-            <div>Packages Available: {{repoInfo.package_count}}</div>
-        </paper-card>
-
-        <iron-list items="[[ajaxResponse]]" grid>
-            <template>
-                <div class="packageContainer">
-                    <div class="packageContent" tabindex$="[[tabIndex]]">
-                        <paper-card animated-shadow class="box">
-                            <div id="head">[[item.name]]</div>
-                            <a href="#/details/[[category]]/[[item.name]]"></a>
-                            <div id="owner">by [[item.owner]]</div>
-                            <div class="gold">
-                                <star-rating  stars="5" rate="[[item.rating]]"></star-rating>
-                            </div>
-                            <div id="desc">[[_filterContent(item.desc)]]...</div>
-                        </paper-card>
+            <iron-list items="[[ajaxResponse]]" grid on-dom-change="_onDomChange">
+                <template>
+                    <div class="packageContainer">
+                        <div class="packageContent" tabindex$="[[tabIndex]]">
+                            <paper-card animated-shadow class="box">
+                                <div id="head">[[item.name]]</div>
+                                <a href="#/details/[[category]]/[[item.name]]"></a>
+                                <div id="owner">by [[item.owner]]</div>
+                                <div class="gold">
+                                    <star-rating stars="5" rate="[[item.rating]]"></star-rating>
+                                </div>
+                                <div id="desc">[[_filterContent(item.desc)]]...</div>
+                            </paper-card>
+                        </div>
                     </div>
-                </div>
-            </template>
-        </iron-list>
-    <appstore-footer></appstore-footer>
+                </template>
+            </iron-list>
+        </div>
+        <appstore-footer></appstore-footer>
     </template>
     <script>
         Polymer({
             is: 'appstore-packages',
+
+            behaviors: [
+                Polymer.NeonAnimatableBehavior,
+                Polymer.NeonSharedElementAnimatableBehavior,
+                Polymer.NeonAnimationRunnerBehavior
+            ],
 
             properties: {
 
@@ -130,6 +136,27 @@
 
                 repoInfo: Object,
 
+                animationConfig: {
+                    value: function() {
+                        return {
+                            'entry': [{
+                                name: 'cascaded-animation',
+                                animation: 'scale-up-animation',
+                                timing: {
+                                    delay: 500
+                                }
+                            }],
+                            'exit': [{
+                                name: 'fade-out-animation',
+                                node: this,
+                                timing: {
+                                    delay: 100,
+                                    duration: 500
+                                }
+                            }],
+                        }
+                    }
+                },
             },
 
             _computeRepoURL(category) {
@@ -142,6 +169,12 @@
 
             _filterContent(str) {
                 return str.substr(0, 160);
+            },
+
+            _onDomChange:function(){
+                var nodeList = Polymer.dom(this.root).querySelectorAll('.box');
+                this.animationConfig['entry'][0].nodes = Array.prototype.slice.call(nodeList);
+                this.playAnimation('entry');
             }
         });
     </script>

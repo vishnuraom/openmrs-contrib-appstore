@@ -53,6 +53,7 @@
                 background-size: 100% 100%;
             }
         </style>
+
         <app-location route="{{route}}" use-hash-as-path></app-location>
         <app-route route="{{route}}" pattern="/home" active="{{homeActive}}"></app-route>
         <app-route route="{{route}}" pattern="/packages/:category" data="{{categoryData}}" active="{{packagesActive}}"></app-route>
@@ -79,14 +80,11 @@
                     </paper-tabs>
                 </app-toolbar>
             </app-header>
-
-            <appstore-home active="{{homeActive}}"></appstore-home>
-            <appstore-packages category="{{categoryData.category}}" active="{{packagesActive}}"></appstore-packages>
-            <appstore-details category="{{packageData.category}}" package="{{packageData.packageDetails}}" active="{{detailsActive}}"></appstore-details>
-
+              <appstore-home id="home" active="{{homeActive}}"></appstore-home>
+              <appstore-packages id="packages" category="{{categoryData.category}}" active="{{packagesActive}}"></appstore-packages>
+              <appstore-details category="{{packageData.category}}" package="{{packageData.packageDetails}}" active="{{detailsActive}}"></appstore-details>
         </app-header-layout>
     </template>
-
     <script>
         Polymer({
 
