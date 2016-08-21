@@ -1,0 +1,181 @@
+<dom-module id="appstore-search">
+    <template>
+        <style>
+            :host {
+                padding: 0 16px;
+                display: block;
+            }
+
+            .input-panel {
+                @apply(--layout-horizontal);
+                @apply(--layout-center);
+            }
+
+            .icon {
+                color: var(--disabled-text-color);
+            }
+
+            #input {
+                margin: 0 10px;
+                border: 0;
+                outline: 0;
+                padding: 16px 0;
+                cursor: text;
+            }
+
+            #input[disabled] {
+                background: var(--background-color, white);
+            }
+
+            iron-list {
+                margin-top: 20px;
+            }
+
+            .packageContent {
+                @apply(--layout);
+                background-color: #fff;
+                position: relative;
+                width: 370px;
+                height: 270px;
+                margin: 10px;
+            }
+
+            .packageContent> paper-card {
+                @apply(--layout-flex);
+            }
+
+            .boxes {
+                font-family: 'Roboto', 'Noto', sans-serif;
+                padding: 12px;
+            }
+
+            .boxes a {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 1;
+            }
+
+            #head {
+                font-size: 24px;
+                font-weight: 400;
+                color: #000;
+            }
+
+            #owner {
+                font-weight: 100;
+                font-size: 16px;
+            }
+
+            #desc {
+                font-weight: 300;
+                font-size: 18px;
+            }
+
+            paper-card:hover {
+                @apply(--shadow-elevation-8dp);
+            }
+        </style>
+
+        <div class="input-panel flex">
+            <iron-icon icon="[[icon]]" class="icon"></iron-icon>
+            <input is="iron-input" id="input" bind-value="{{query}}" placeholder="[[placeholder]]" class="flex"></input>
+        </div>
+        <paper-icon-button icon="clear" hidden$="[[!query]]" on-tap="_clear" class="icon"></paper-icon-button>
+
+        <iron-ajax id="ajax" url="http://localhost:3000/search?repo={{category}}&term={{query}}" handle-as="json" last-response="{{handleResponse}}"></iron-ajax>
+
+        <template is="dom-if" if="{{showResults}}" restamp="true">
+            <iron-list items="[[searchResults]]" grid>
+                <template>
+                    <div class="packageContainer">
+                        <div class="packageContent" tabindex$="[[tabIndex]]">
+                            <paper-card animated-shadow class="boxes">
+                                <div id="head">[[item.name]]</div>
+                                <a href="#/details/[[item.repo]]/[[item.name]]"></a>
+                                <div id="owner">by [[item.owner]]</div>
+                                <div>
+                                    <star-rating stars="5" rate="[[item.rating]]"></star-rating>
+                                </div>
+                                <div id="desc">[[_filterContent(item.desc)]]...</div>
+                            </paper-card>
+                        </div>
+                    </div>
+                </template>
+            </iron-list>
+        </template>
+    </template>
+    <script>
+        Polymer({
+            is: 'appstore-search',
+
+            properties: {
+
+                query: {
+                    type: String,
+                    notify: true,
+                    value: ''
+                },
+
+                icon: {
+                    type: String,
+                    value: 'search'
+                },
+
+                placeholder: {
+                    type: String,
+                    value: 'Search for packages'
+                },
+
+                searchResults: {
+                    type: Object,
+                },
+
+                handleResponse: {
+                    type: Object,
+                    notify: true,
+                    observer: '_handleResponse'
+                },
+
+                showResults: {
+                    type: Boolean,
+                    value: false
+                },
+
+                category: {
+                    type: String,
+                }
+            },
+
+            behaviors: [
+                Polymer.IronA11yKeysBehavior
+            ],
+
+            keyBindings: {
+                'enter': '_search'
+            },
+
+            _clear: function() {
+                this.query = "";
+                this.showResults = false;
+                this.$.input.focus();
+            },
+
+            _search: function() {
+                document.getElementById("ajax").generateRequest();
+            },
+
+            _handleResponse: function() {
+                this.searchResults = this.handleResponse;
+                this.showResults = true;
+            },
+
+            _filterContent(str) {
+                return str.substr(0, 160);
+            }
+
+        });
+    </script>
+</dom-module>

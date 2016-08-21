@@ -9,6 +9,10 @@
                 display: block;
             }
 
+            #search {
+                margin-top: 20px;
+            }
+
             iron-list {
                 margin-top: 20px;
             }
@@ -79,6 +83,9 @@
                 font-size: 18px;
             }
         </style>
+
+        <appstore-search id="search" category="{{category}}"></appstore-search>
+
         <div id="packagesPage">
             <iron-ajax auto="true" url="[[_computeDetailsURL(category)]]" handle-as="json" last-response="{{ajaxResponse}}"></iron-ajax>
             <iron-ajax auto="true" url="[[_computeRepoURL(category)]]" handle-as="json" last-response="{{repoInfo}}"></iron-ajax>
@@ -171,7 +178,7 @@
                 return str.substr(0, 160);
             },
 
-            _onDomChange:function(){
+            _onDomChange: function() {
                 var nodeList = Polymer.dom(this.root).querySelectorAll('.box');
                 this.animationConfig['entry'][0].nodes = Array.prototype.slice.call(nodeList);
                 this.playAnimation('entry');
