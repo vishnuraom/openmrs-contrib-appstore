@@ -53,8 +53,9 @@
                 background-size: 100% 100%;
             }
         </style>
-
+        <!-- app-location binds to the app's URL -->
         <app-location route="{{route}}" use-hash-as-path></app-location>
+        <!-- this app-route manages the top-level routes -->
         <app-route route="{{route}}" pattern="/home" active="{{homeActive}}"></app-route>
         <app-route route="{{route}}" pattern="/packages/:category" data="{{categoryData}}" active="{{packagesActive}}"></app-route>
         <app-route route="{{route}}" pattern="/details/:category/:packageDetails" data="{{packageData}}" active="{{detailsActive}}"></app-route>
@@ -80,8 +81,8 @@
                     </paper-tabs>
                 </app-toolbar>
             </app-header>
-              <appstore-home id="home" active="{{homeActive}}"></appstore-home>
-              <appstore-packages id="packages" category="{{categoryData.category}}" active="{{packagesActive}}"></appstore-packages>
+              <appstore-home active="{{homeActive}}"></appstore-home>
+              <appstore-packages category="{{categoryData.category}}" active="{{packagesActive}}"></appstore-packages>
               <appstore-details category="{{packageData.category}}" package="{{packageData.packageDetails}}" active="{{detailsActive}}"></appstore-details>
         </app-header-layout>
     </template>
@@ -91,27 +92,46 @@
             is: 'appstore-header',
 
             properties: {
-
-                route: Object,
-
-                subRoute: Object,
-
-                categoryData: Object,
-
-                packageData: Object,
+                /**
+                 * route: route object stores the app's URL
+                 * @type {Object}
+                 */
+                route: {
+                    type:Object,
+                },
+                /**
+                 * categoryData: If the /packages url pattern matches, the route is active and URL parameters /:category are added to the categoryData object.
+                 * @type {Object}
+                 */
+                categoryData: {
+                    type:Object,
+                },
+                /**
+                 * packageData: If the /details url pattern matches, the route is active and URL parameters /:category , /:packageDetails are added to the packageData object.
+                 * @type {Object}
+                 */
+                packageData: {
+                    type:Object,
+                },
 
             },
-
+            /**
+             * observers: Observers are methods invoked when observable changes occur to the element's data.
+             */
             observers: [
                 '_routePageChanged(packageData.packageDetails)'
             ],
-
+            /**
+             * attached: Called after the element is attached to the document.
+             */
             attached: function() {
                 if (!this.route.path) {
                     this.set('route.path', '/packages/omod');
                 }
             },
-
+            /**
+             * _routePageChanged:Scrolls to top of the page
+             */
             _routePageChanged: function() {
                 Polymer.AppLayout.scroll({
                     top: 0,

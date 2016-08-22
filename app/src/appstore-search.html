@@ -2,7 +2,6 @@
     <template>
         <style>
             :host {
-                padding: 0 16px;
                 display: block;
             }
 
@@ -112,66 +111,99 @@
             is: 'appstore-search',
 
             properties: {
-
+                /**
+                 * query: The term to be searched
+                 * @type {String}
+                 */
                 query: {
                     type: String,
                     notify: true,
                     value: ''
                 },
-
+                /**
+                 * icon: to show
+                 * @type {Number}
+                 */
                 icon: {
                     type: String,
                     value: 'search'
                 },
-
+                /**
+                 * placeholder: String shown to user when no search term is entered
+                 * @type {String}
+                 */
                 placeholder: {
                     type: String,
                     value: 'Search for packages'
                 },
-
+                /**
+                 * searchResults: search results i.e the response received from get request
+                 * @type {Object}
+                 */
                 searchResults: {
                     type: Object,
                 },
-
+                /**
+                 * handleResponse: search results i.e the response received from get request
+                 * @type {Object}
+                 */
                 handleResponse: {
                     type: Object,
                     notify: true,
                     observer: '_handleResponse'
                 },
-
+                /**
+                 * showResults: to show/hide the search results
+                 * @type {Boolean}
+                 */
                 showResults: {
                     type: Boolean,
                     value: false
                 },
-
+                /**
+                 * category: Repo in which the search is to be performed(omod/owa)
+                 * @type {String}
+                 */
                 category: {
                     type: String,
                 }
             },
-
+            /**
+             * Behaviour required for processing keyboard commands.
+             */
             behaviors: [
                 Polymer.IronA11yKeysBehavior
             ],
-
+            /**
+             * keyBindings: property to express what combination of keys will trigger the callback.
+             */
             keyBindings: {
                 'enter': '_search'
             },
-
+            /**
+             * _clear: Clears the search term from search bar and hides the previous search results too.
+             */
             _clear: function() {
                 this.query = "";
                 this.showResults = false;
                 this.$.input.focus();
             },
-
+            /**
+             * _search: Fires an ajax request when enter key is pressed.
+             */
             _search: function() {
                 document.getElementById("ajax").generateRequest();
             },
-
+            /**
+             * _handleResponse: Repo in which the search is to be performed
+             */
             _handleResponse: function() {
                 this.searchResults = this.handleResponse;
                 this.showResults = true;
             },
-
+            /**
+             * _filterContent: Strips the description of packages to 160 characters.
+             */
             _filterContent(str) {
                 return str.substr(0, 160);
             }

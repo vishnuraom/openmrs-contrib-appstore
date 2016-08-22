@@ -156,22 +156,54 @@
             is: 'appstore-details',
 
             properties: {
-
+                /**
+                 * active: True when the route pattern matches with the details
+                 * @type {Boolean}
+                 */
                 active: {
                     type: Boolean,
                     value: false,
                     reflectToAttribute: true
+                },
+                /**
+                 * category: Repository name passed from route object
+                 * @type {String}
+                 */
+                category: {
+                    type:String,
+                },
+                /**
+                 * package: Package name passed from route object
+                 * @type {String}
+                 */
+                package:{
+                    type:String,
                 }
             },
-
+            /**
+             * _computeDetailsURL: Constructs the URL for the route /details
+             *  category is the repository and package is the name of the package.
+             *
+             *  @return {String}
+             */
             _computeDetailsURL: function(category, package) {
                 return "http://localhost:3000/details?repo=" + category + "&name=" + package;
             },
-
+            /**
+             * _computeFilesURL: Constructs the URL for the route /packagefiles
+             *  category is the repository and package is the name of the package.
+             *
+             *  @return {String}
+             */
             _computeFilesURL: function(category, package) {
                 return "http://localhost:3000/packagefiles?repo=" + category + "&name=" + package;
             },
-
+            /**
+             * _getPath: Gets the path of latest version of the package
+             *  path is used to construct the download url for a package
+             *
+             *  @return {String}
+             */
             _getPath: function(latestversion, versions) {
                 for (var i = 0; i < versions.length; i++) {
                     var obj = versions[i];

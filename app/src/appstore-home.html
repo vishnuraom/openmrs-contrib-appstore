@@ -53,20 +53,27 @@
         Polymer({
 
             is: 'appstore-home',
-
+            /**
+             * Behaviours required for running animations
+             */
             behaviors: [
                 Polymer.NeonAnimatableBehavior,
                 Polymer.NeonAnimationRunnerBehavior
             ],
 
             properties: {
-
+                /**
+                 * active: True when the route pattern matches with the home
+                 * @type {Boolean}
+                 */
                 active: {
                     type: Boolean,
                     value: false,
                     reflectToAttribute: true
                 },
-
+                /**
+                 * animationConfig: Animation configuration
+                 */
                 animationConfig: {
                     value: function() {
                         return {
@@ -90,7 +97,9 @@
                     }
                 },
             },
-
+            /**
+             * ready: Executes animation after the element is loaded.
+             */
             ready: function() {
                 this.playAnimation('entry');
             }

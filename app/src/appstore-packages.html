@@ -124,7 +124,9 @@
     <script>
         Polymer({
             is: 'appstore-packages',
-
+            /**
+             * behaviors: Behaviours required for running neon animations.
+             */
             behaviors: [
                 Polymer.NeonAnimatableBehavior,
                 Polymer.NeonSharedElementAnimatableBehavior,
@@ -132,17 +134,32 @@
             ],
 
             properties: {
-
+                /**
+                 * active: True when the route pattern matches with the packages
+                 * @type {Boolean}
+                 */
                 active: {
                     type: Boolean,
                     value: false,
                     reflectToAttribute: true
                 },
-
-                packageData: Object,
-
-                repoInfo: Object,
-
+                /**
+                 * category: Repository name passed from route object
+                 * @type {String}
+                 */
+                category: {
+                    type:String,
+                },
+                /**
+                 * repoInfo: Response received by making rest call to /repositories route
+                 * @type {Object}
+                 */
+                repoInfo:{
+                  type:Object,
+                },
+                /**
+                 * animationConfig: Animation configuration
+                 */
                 animationConfig: {
                     value: function() {
                         return {
@@ -165,19 +182,29 @@
                     }
                 },
             },
-
+            /**
+             * _computeFilesURL: Constructs the URL for the route /repositories
+             *  category is the repository name
+             */
             _computeRepoURL(category) {
                 return 'http://localhost:3000/repositories?repo=' + category;
             },
-
+            /**
+             * _computeDetailsURL: Constructs the URL for the route /alldetails
+             *  category is the repository name
+             */
             _computeDetailsURL(category) {
                 return 'http://localhost:3000/alldetails?repo=' + category;
             },
-
+            /**
+             * _filterContent: Strips the description of packages to 160 characters.
+             */
             _filterContent(str) {
                 return str.substr(0, 160);
             },
-
+            /**
+             * _onDomChange: Runs the entry animation whenever the page is loaded.
+             */
             _onDomChange: function() {
                 var nodeList = Polymer.dom(this.root).querySelectorAll('.box');
                 this.animationConfig['entry'][0].nodes = Array.prototype.slice.call(nodeList);
