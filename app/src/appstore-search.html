@@ -6,6 +6,7 @@
             }
 
             .input-panel {
+                background: var(--background-color, white);
                 @apply(--layout-horizontal);
                 @apply(--layout-center);
             }
@@ -19,6 +20,7 @@
                 border: 0;
                 outline: 0;
                 padding: 16px 0;
+                width: 98%;
                 cursor: text;
             }
 
@@ -81,8 +83,8 @@
         <div class="input-panel flex">
             <iron-icon icon="[[icon]]" class="icon"></iron-icon>
             <input is="iron-input" id="input" bind-value="{{query}}" placeholder="[[placeholder]]" class="flex"></input>
+            <paper-icon-button id="clear" icon="clear" hidden$="[[!query]]" on-tap="_clear" class="icon"></paper-icon-button>
         </div>
-        <paper-icon-button icon="clear" hidden$="[[!query]]" on-tap="_clear" class="icon"></paper-icon-button>
 
         <iron-ajax id="ajax" url="http://localhost:3000/search?repo={{category}}&term={{query}}" handle-as="json" last-response="{{handleResponse}}"></iron-ajax>
 
